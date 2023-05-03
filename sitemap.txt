@@ -10,9 +10,9 @@ https://zjjfly.github.io/2017/10/10/%E5%BF%AB%E5%AD%A6Java8%20%E7%AC%AC%E4%B8%89
 https://zjjfly.github.io/2017/09/06/2017-9-6-%E4%BD%BF%E7%94%A8JMH%E8%BF%9B%E8%A1%8C%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/
 https://zjjfly.github.io/
 https://zjjfly.github.io/tags/Java-Java8/
-https://zjjfly.github.io/tags/rsync/
 https://zjjfly.github.io/tags/Java-JMH/
 https://zjjfly.github.io/tags/Java-Java7-Java8/
-https://zjjfly.github.io/tags/Java-Java9-Java10-Java11/
-https://zjjfly.github.io/tags/Java-Java12-Java13-Java14-Java15-Java16-Java17/
+https://zjjfly.github.io/tags/rsync/
 https://zjjfly.github.io/tags/Python-Tricks/
+https://zjjfly.github.io/tags/Java-Java12-Java13-Java14-Java15-Java16-Java17/
+https://zjjfly.github.io/tags/Java-Java9-Java10-Java11/

@@ -108,13 +108,6 @@
   </url>
   
   <url>
-    <loc>https://zjjfly.github.io/tags/rsync/</loc>
-    <lastmod>2023-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://zjjfly.github.io/tags/Java-JMH/</loc>
     <lastmod>2023-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -129,7 +122,14 @@
   </url>
   
   <url>
-    <loc>https://zjjfly.github.io/tags/Java-Java9-Java10-Java11/</loc>
+    <loc>https://zjjfly.github.io/tags/rsync/</loc>
+    <lastmod>2023-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zjjfly.github.io/tags/Python-Tricks/</loc>
     <lastmod>2023-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -143,7 +143,7 @@
   </url>
   
   <url>
-    <loc>https://zjjfly.github.io/tags/Python-Tricks/</loc>
+    <loc>https://zjjfly.github.io/tags/Java-Java9-Java10-Java11/</loc>
     <lastmod>2023-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
