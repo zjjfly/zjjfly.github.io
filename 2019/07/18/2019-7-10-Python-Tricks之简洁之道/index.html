@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zjjfly.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":250,"display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="这是&lt;&gt;一书的读书笔记.什么是Python Tricks?就是一小段Python代码,它既传授了Python语言的一个特性,也是一个让你深入发掘这一特性的驱动力. 本文是该书第二章”写出更简洁的Python”的读书笔记.这里的简洁不止意味的代码量的少,还是指不需要加很多注释就可以让别人看懂,即可读性高. 善用assert有的时候一个很有用的语言特性会得不到特别多的关注,Python的a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python Tricks之简洁之道">
+<meta property="og:url" content="https://zjjfly.github.io/2019/07/18/2019-7-10-Python-Tricks%E4%B9%8B%E7%AE%80%E6%B4%81%E4%B9%8B%E9%81%93/index.html">
+<meta property="og:site_name" content="zjjfly&#39;s blog">
+<meta property="og:description" content="这是&lt;&gt;一书的读书笔记.什么是Python Tricks?就是一小段Python代码,它既传授了Python语言的一个特性,也是一个让你深入发掘这一特性的驱动力. 本文是该书第二章”写出更简洁的Python”的读书笔记.这里的简洁不止意味的代码量的少,还是指不需要加很多注释就可以让别人看懂,即可读性高. 善用assert有的时候一个很有用的语言特性会得不到特别多的关注,Python的a">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-07-18T01:32:28.000Z">
+<meta property="article:modified_time" content="2023-05-03T01:49:44.409Z">
+<meta property="article:author" content="JunJie Zi">
+<meta property="article:tag" content="Python Tricks">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://zjjfly.github.io/2019/07/18/2019-7-10-Python-Tricks%E4%B9%8B%E7%AE%80%E6%B4%81%E4%B9%8B%E9%81%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh'
+  };
+</script>
+
+  <title>Python Tricks之简洁之道 | zjjfly's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="zjjfly's blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">zjjfly's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="https://zjjfly.github.io/2019/07/18/2019-7-10-Python-Tricks%E4%B9%8B%E7%AE%80%E6%B4%81%E4%B9%8B%E9%81%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="JunJie Zi">
+      <meta itemprop="description" content="Java,Clojure,Scala...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zjjfly's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python Tricks之简洁之道
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-07-18 09:32:28" itemprop="dateCreated datePublished" datetime="2019-07-18T09:32:28+08:00">2019-07-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-05-03 09:49:44" itemprop="dateModified" datetime="2023-05-03T09:49:44+08:00">2023-05-03</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这是&lt;<Python Tricks>&gt;一书的读书笔记.什么是Python Tricks?就是一小段Python代码,它既传授了Python语言的一个特性,也是一个让你深入发掘这一特性的驱动力.</p>
+<p>本文是该书第二章”写出更简洁的Python”的读书笔记.这里的简洁不止意味的代码量的少,还是指不需要加很多注释就可以让别人看懂,即可读性高.</p>
+<h2 id="善用assert"><a href="#善用assert" class="headerlink" title="善用assert"></a>善用assert</h2><p>有的时候一个很有用的语言特性会得不到特别多的关注,Python的<code>assert</code>就是一个例子.它是一个dubug的帮手,可以测试一个条件表达式.如果表达式的结果为真,什么事都不会发生;如果表达式为假,程序会抛出一个<code>AssertionError</code>的异常.</p>
+<h3 id="一个assert的例子"><a href="#一个assert的例子" class="headerlink" title="一个assert的例子"></a>一个assert的例子</h3><p>来看一个计算商品打折后的价格的例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">apply_discount</span>(<span class="params">product, discount</span>):</span><br><span class="line">    price = <span class="built_in">int</span>(product[<span class="string">&#x27;price&#x27;</span>] * (<span class="number">1.0</span> - discount))</span><br><span class="line">    <span class="keyword">assert</span> <span class="number">0</span> &lt; price &lt; product[<span class="string">&#x27;price&#x27;</span>]</span><br><span class="line">    <span class="keyword">return</span> price</span><br></pre></td></tr></table></figure>
+
+<p>这段代码中的<code>assert</code>保证了打折后的价格不会低于0,也不会高于商品的原来的价格.使用代码测试一下.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">shoes = &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;Fancy Shoes&#x27;</span>, <span class="string">&#x27;price&#x27;</span>: <span class="number">14900</span>&#125;</span><br><span class="line">apply_discount(shoe,<span class="number">0.25</span>)</span><br></pre></td></tr></table></figure>
+
+<p>最后的输出是<code>11175</code>,符合预期.再故意使用一个错误的折扣来测试.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply_discount(shoe,<span class="number">2.0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>程序会报错:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;D:/WorkSpace/PythonTricks/ch2/assert.py&quot;, line 10, in &lt;module&gt;</span><br><span class="line">    apply_discount(shoes, 2.0)</span><br><span class="line">  File &quot;D:/WorkSpace/PythonTricks/ch2/assert.py&quot;, line 3, in apply_discount</span><br><span class="line">    assert 0 &lt; price &lt; product[&#x27;price&#x27;]</span><br><span class="line">AssertionError</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>assert</code>的好处是可以更快速的debug,而且从长远来看它会让你的代码更容易维护.</p>
+<h3 id="为什么不使用一般的异常"><a href="#为什么不使用一般的异常" class="headerlink" title="为什么不使用一般的异常"></a>为什么不使用一般的异常</h3><p>为什么不使用<code>if-else</code>并抛出一个一般的异常呢?因为<code>assert</code>告知开发人员出现了不可恢复的错误,而不是那些可以预估到的错误,如文件不存在这样的错误.</p>
+<p><code>assert</code>用于程序内部的自省,它断言一些条件是不可能的,如果这些条件有一个不满足,那就说明你的代码是有bug的,你就可以很快的通过报错信息来定位出错的代码.这条准则同样适用于其他语言.但记住,<strong>断言错误永远不应该出现,除非你的程序有bug</strong>.</p>
+<h3 id="assert的语法"><a href="#assert的语法" class="headerlink" title="assert的语法"></a>assert的语法</h3><p>根据Python的文档,<code>assert</code>语法是这样的:</p>
+<blockquote>
+<p>assert_stmt ::&#x3D; “assert” expression1 [“,” expression2]</p>
+</blockquote>
+<p>其中<code>expression</code>是一个条件表达式,<code>expression2</code>是可选的自定义错误信息.</p>
+<p>Python解释器会把<code>assert</code>表达式转换成下面的代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="literal">__debug__</span>:</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> expression1:</span><br><span class="line">		<span class="keyword">raise</span> AssertionError(expression2)</span><br></pre></td></tr></table></figure>
+
+<p>可以看出,全局变量<code>__debug__</code>决定了<code>assert</code>是否起作用,一般情况下这个变量都是<code>True</code>的.</p>
+<h3 id="assert的陷阱"><a href="#assert的陷阱" class="headerlink" title="assert的陷阱"></a>assert的陷阱</h3><p>1.不要把<code>assert</code>用于数据验证.因为<code>assert</code>可以通过命令行参数<code>-O</code>和<code>-OO</code>,或是环境变量<code>PYTHONOPTIMIZE</code>来禁用.如果你的代码使用<code>assert</code>来检查方法的参数是否包含错误的或不符合预期的参数,那么就会产生bug或安全漏洞.</p>
+<p>举个例子,你写了一个删除商品的方法:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">delete_product</span>(<span class="params">prod_id, user</span>):</span><br><span class="line">	<span class="keyword">assert</span> user.is_admin(), <span class="string">&#x27;Must be admin&#x27;</span></span><br><span class="line">	<span class="keyword">assert</span> store.has_product(prod_id), <span class="string">&#x27;Unknown product&#x27;</span></span><br><span class="line">	store.get_product(prod_id).delete()</span><br></pre></td></tr></table></figure>
+
+<p>当<code>assert</code>禁用时,会出现两个问题:</p>
+<ul>
+<li>任何用户都可以删除商品</li>
+<li>黑客可以通过DDOS来攻击,导致服务器宕机</li>
+</ul>
+<p>怎么解决这个问题,那就是不用<code>assert</code>来验证,而是用一般的<code>if</code>表达式并在必要的时候抛出验证错误.就像这样:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">delete_product</span>(<span class="params">product_id, user</span>):</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> user.is_admin():</span><br><span class="line">		<span class="keyword">raise</span> AuthError(<span class="string">&#x27;Must be admin to delete&#x27;</span>)</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> store.has_product(product_id):</span><br><span class="line">		<span class="keyword">raise</span> ValueError(<span class="string">&#x27;Unknown product id&#x27;</span>)</span><br><span class="line">	store.get_product(product_id).delete()</span><br></pre></td></tr></table></figure>
+
+<p>这样写的还有一个好处是,相比断言错误,这里抛出的自定义的异常在语义上更加正确.</p>
+<p>2.永远不会失败的断言.如果你想要抛出<code>AssertError</code>的时候显示一些自定义信息,那么你可以在布尔表达式后面加一个字符串,但这种写法有一个陷阱,如果你不小心用括号把这两个参数包了起来,那么这个断言就永远是<code>True</code>的.例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assert</span>(<span class="number">1</span> == <span class="number">2</span>, <span class="string">&#x27;This should fail&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>原因是实际上这里的条件表达式变为了一个tuple,而tuple作为一个条件表达式永远是<code>True</code>的.这种写法在Python3中会导致一个语法告警,所以不再那么容易出现了.</p>
+<h2 id="充足的逗号"><a href="#充足的逗号" class="headerlink" title="充足的逗号"></a>充足的逗号</h2><p>当你在dict,list和set常量中添加删除元素的时候,建议你在每一个行的末尾都加上逗号.</p>
+<p>你可能一下子不明白我在说啥?看一个例子,假设你的代码中有下面这样的一个list:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">names = [<span class="string">&#x27;Alice&#x27;</span>, <span class="string">&#x27;Bob&#x27;</span>, <span class="string">&#x27;Dilbert&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>如果你修改了其中一个元素,那么在版本控制系统中很难看出你改的内容,特别是当这个list的元素比较多的时候,因为版本控制系统如Git都是基于行的.</p>
+<p>一种更好的代码风格是这样的:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">names = [</span><br><span class="line">	<span class="string">&#x27;Alice&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;Bob&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;Dilbert&#x27;</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>每个元素一行,这样在版本控制系统中看代码的diff的时候很容易就知道加了新增,删除或修改了哪些元素.</p>
+<p>但这样写还有一个问题,就是当你新增或删除元素的时候,需要手动的修改逗号的位置,比如在这个list后面再加一个元素,你需要在<code>&#39;Dilbert&#39;</code>后加一个逗号.这样很容易因为忘记修改逗号导致bug.比如:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">names = [</span><br><span class="line">	<span class="string">&#x27;Alice&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;Bob&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;Dilbert&#x27;</span> <span class="comment"># 漏加了一个逗号</span></span><br><span class="line">    <span class="string">&#x27;Jane&#x27;</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>这个list的打印结果是:</p>
+<blockquote>
+<p>[‘Alice’, ‘Bob’, ‘DilbertJane’]</p>
+</blockquote>
+<p>Python把最后两行的字符串合并成了一个字符串.这被称为<code>字符串字面量拼接</code>.这是文档中明确说明的一种行为.它在有些情况下很管用,但也容易引起问题.</p>
+<p>回到上面的代码,要解决这个bug只要加上缺失的逗号就行了,但这样每加一个元素都需要改两行代码显然是件麻烦的事情.解决的办法就是在每一个元素后都加逗号,包括最后一个元素,这种写法在Python中是合法的.</p>
+<p>所以<code>names</code>这个list最好的写法是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">names = [</span><br><span class="line">	<span class="string">&#x27;Alice&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;Bob&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;Dilbert&#x27;</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h2 id="上下文管理器和with表达式"><a href="#上下文管理器和with表达式" class="headerlink" title="上下文管理器和with表达式"></a>上下文管理器和<code>with</code>表达式</h2><p>对一些开发者来说,<code>with</code>被认为是一个很复杂的特性.但如果你一窥它的实质,你会发现其中没有什么魔法,而只是一个语法糖.<br>看一个比较常见的例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f: </span><br><span class="line">	f.write(<span class="string">&#x27;hello, world!&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这段代码在运行的时候会被转换成下面这样的代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) </span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">	f.write(<span class="string">&#x27;hello, world&#x27;</span>) </span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">	f.close()</span><br></pre></td></tr></table></figure>
+
+<p>其中的<code>try</code>和<code>finally</code>是必须的,因为这样写才能保证文件的descriptor最终会被释放,但这样写的不好的地方是比较啰嗦.而如果使用<code>with</code>,代码就简洁了不少.</p>
+<p>在看一个使用<code>with</code>的例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">some_lock = threading.Lock()</span><br><span class="line"><span class="keyword">with</span> some_lock:</span><br><span class="line">	<span class="comment"># Do something...</span></span><br></pre></td></tr></table></figure>
+
+<p>在这两个例子中,<code>with</code>都让你把大多数对资源的处理的逻辑抽象出来.相比于冗长的<code>try...finally</code>,仅仅使用<code>with</code>就可以为你处理这些.</p>
+<p><code>with</code>不止可以提高处理系统资源相关的代码的可读性,还可以让忘记清理或释放不再需要的资源这种事情变得几乎不可能,这也避免了bug和泄露.</p>
+<h3 id="让自定义类型支持with"><a href="#让自定义类型支持with" class="headerlink" title="让自定义类型支持with"></a>让自定义类型支持<code>with</code></h3><p>只要你的类实现了context manager,它就可以使用<code>with</code>声明.什么是context manager?它其实是一个简单的协议,只要类中有<code>__enter__</code>和<code>__exit__</code>这两个方法,它就算是context manager了.Python会在资源管理周期的适当时候调用它们.</p>
+<p>现在试着自己实现类似open()的功能:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ManagedFile</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name</span>):</span><br><span class="line">        self.name = name</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__enter__</span>(<span class="params">self</span>):</span><br><span class="line">        self.file = <span class="built_in">open</span>(self.name, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> self.file</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__exit__</span>(<span class="params">self, exc_type, exc_val, exc_tb</span>):</span><br><span class="line">        <span class="keyword">if</span> self.file:</span><br><span class="line">            self.file.close()</span><br></pre></td></tr></table></figure>
+
+<p>使用它:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> ManagedFile(<span class="string">&#x27;hello.txt&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	f.write(<span class="string">&#x27;hello, world!&#x27;</span>)</span><br><span class="line">	f.write(<span class="string">&#x27;bye now&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>Python会在进入<code>with</code>声明的上下文的时候调用<code>__enter__</code>方法来获取资源,在离开这个上下文的时候调用<code>__exit__</code>方法来是否资源.</p>
+<p>写一个基于类的context manager并不是Python中唯一的支持<code>with</code>声明的方法.还有另一种方法,在标准库中的<code>contextlib</code>模块提供了一些建立于context manager协议之上的抽象.<br>如果你的使用场景适合,它可以让你更容易的支持<code>with</code>.</p>
+<p>比如,你可以使用<code>contextlib.contextmanager</code>注解来标注一个基于生成器的资源工厂方法,然后这个方法就会自动支持<code>with</code>声明了.我们试着用这种方法重新实现<code>ManagedFile</code>这个例子.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> contextlib <span class="keyword">import</span> contextmanager</span><br><span class="line"><span class="meta">@contextmanager</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">managed_file</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        file = <span class="built_in">open</span>(name, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">        <span class="keyword">yield</span> file</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        file.close()</span><br></pre></td></tr></table></figure>
+
+<p><code>managed_file</code>是一个生成器,它首先获取资源,然后它使用yield阻塞方法的继续执行并把资源返回给调用者.当调用者离开<code>with</code>,生成器会继续执行以便进行对资源的清理工作,资源就可以被释放.</p>
+<p>这两种方法本质上是等价的,你可以选择适合你情况的,主要取决于你的团队的习惯以及哪种方法的可读性更好.</p>
+<h3 id="使用context-manager写出更漂亮的API"><a href="#使用context-manager写出更漂亮的API" class="headerlink" title="使用context manager写出更漂亮的API"></a>使用context manager写出更漂亮的API</h3><p>实际上context manager不止能用于资源管理,它的灵活性很高,你可以用它写便利的API.<br>比如,你要写一个报表生成程序,需要处理文本缩进.想要达到这样的效果:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> Indent() <span class="keyword">as</span> indent:</span><br><span class="line">    indent.<span class="built_in">print</span>(<span class="string">&#x27;hi!&#x27;</span>)</span><br><span class="line">    <span class="keyword">with</span> indent:</span><br><span class="line">        indent.<span class="built_in">print</span>(<span class="string">&#x27;hello&#x27;</span>)</span><br><span class="line">        <span class="keyword">with</span> indent:</span><br><span class="line">            indent.<span class="built_in">print</span>(<span class="string">&#x27;bonjour&#x27;</span>)</span><br><span class="line">    indent.<span class="built_in">print</span>(<span class="string">&#x27;hey&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>预期的输出:</p>
+<blockquote>
+<p>hi!<br/><br>&amp;emsp;&amp;emsp;hello<br/><br>&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;bonjour<br/><br>hey</p>
+</blockquote>
+<p>这样的API读着很像DSL,基本做到了代码即结果,你看代码就很容易知道它运行的结果,可读性很高.下面是<code>Indent</code>的实现:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Indent</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.indentSize = <span class="number">0</span></span><br><span class="line">        self.entered = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__enter__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">if</span> self.entered:</span><br><span class="line">            self.indentSize += <span class="number">1</span></span><br><span class="line">        self.entered = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__exit__</span>(<span class="params">self, exc_type, exc_val, exc_tb</span>):</span><br><span class="line">        <span class="keyword">if</span> self.indentSize:</span><br><span class="line">            self.indentSize -= <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">print</span>(<span class="params">self, s</span>):</span><br><span class="line">        indent_str = <span class="string">&#x27;\t&#x27;</span> * self.indentSize</span><br><span class="line">        <span class="built_in">print</span>(indent_str, s)</span><br></pre></td></tr></table></figure>
+
+<h2 id="下划线-dunders和其他"><a href="#下划线-dunders和其他" class="headerlink" title="下划线,dunders和其他"></a>下划线,dunders和其他</h2><p>单下划线或双下划线在Python的变量名或方法名中很常见.它们实际是有一些含义的,其中一些只是约定俗成的习惯(如本地变量名使用单下划线分隔不同的单词,即snake case),还有一些则是Python解释器强制规定的.</p>
+<p>你肯定会好奇单下划线和双下划线分别代表什么含义,接下来就会介绍五种下划线的模式和命名习惯以及它们是如何影响Python程序的行为的.</p>
+<h3 id="单下划线开头-”-var”"><a href="#单下划线开头-”-var”" class="headerlink" title="单下划线开头:”_var”"></a>单下划线开头:”_var”</h3><p>以这样的方法命名变量或方法,仅仅是一种Python社区的习惯.它对于程序员是一个暗示:这个变量或方法只在类的内部使用.这个惯例在PEP 8(最常用的Python编码规范)中有明确的规定.</p>
+<p>但这种写法并不是Python解释器强制规定的,Python并没有像Java那样,<code>private</code>和<code>public</code>变量有着很大的区别.它就像是一个警告标志,告诉程序员不要把这个变量或方法当成这个类的公共接口的一部分.<br>例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Test</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.foo = <span class="number">11</span></span><br><span class="line">        self._bar = <span class="number">23</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你实例化了这个类并访问<code>foo</code>和<code>_bar</code>属性会怎么样?</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">test = Test()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;foo:%d&quot;</span> % test.foo)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;_bar:%d&quot;</span> % test._bar)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果:</p>
+<blockquote>
+<p>foo:11<br/><br>_bar:23</p>
+</blockquote>
+<p>所以,开头的下划线没有阻止<code>_bar</code>被外部代码访问,这只是一种编程规范.</p>
+<p>但它确实会影响模块的导入.如果你使用wildcard import(import *)导入一个含有名称以单下划线开头的函数或变量的模块,那么这些单下划线开头的函数或变量不会被导入.<br>例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">external_func</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="number">23</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_internal_func</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="number">42</span></span><br></pre></td></tr></table></figure>
+
+<p>在另一个Python文件中导入这个模块:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> my_module <span class="keyword">import</span> *</span><br><span class="line">external_func()</span><br><span class="line">_internal_func()</span><br></pre></td></tr></table></figure>
+
+<p>输出结果:</p>
+<blockquote>
+<p>23<br/><br>NameError: “name ‘_internal_func’ is not defined”</p>
+</blockquote>
+<p>但如果你遵守PEP 8,那么wildcard import并不是推荐的做法,使用一般的import更好.一般的import也不会发生这种以下划线开头的字段没有被导入的情况.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> my_module</span><br><span class="line">my_module.external_func()</span><br><span class="line">my_module._internal_func()</span><br></pre></td></tr></table></figure>
+
+<p>输出结果:</p>
+<blockquote>
+<p>23<br/><br>42</p>
+</blockquote>
+<h3 id="单下划线结尾-”var-”"><a href="#单下划线结尾-”var-”" class="headerlink" title="单下划线结尾:”var_”"></a>单下划线结尾:”var_”</h3><p>有的时候,你觉得最适合这个方法或变量的单词已经被Python用作关键字了.所以像<code>class</code>,<code>def</code>不能作为变量的名称.这种情况下,你可以在这些词后面加一个下划线避免命名冲突.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">make_object</span>(<span class="params">name, class_</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>总之,以单下划线结尾这种命名方式是用于防止命名冲突的,这个惯例也是在PEP 8中规定的.</p>
+<h3 id="双下划线开头-”-var”"><a href="#双下划线开头-”-var”" class="headerlink" title="双下划线开头:”__var”"></a>双下划线开头:”__var”</h3><p>之前的命名模式都只是一种编程惯例,但类中以双下划线开头的方法或变量就不一样了.这种写法会使解释器对它的名称重写以防止子类中的命名冲突.这种做法被称为名称重整(name mangling).</p>
+<p>例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Test</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.foo = <span class="number">11</span></span><br><span class="line">        self._bar = <span class="number">23</span></span><br><span class="line">        self.__baz = <span class="number">23</span></span><br></pre></td></tr></table></figure>
+
+<p>用<code>dir()</code>来看看这个类的实例中的成员:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t = Test()</span><br><span class="line"><span class="built_in">dir</span>(t)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>[‘_Test__baz’, ‘__class__‘, ‘__delattr__‘, ‘__dict__‘, ‘__dir__‘, ‘__doc__‘, ‘__eq__‘, ‘__format__‘, ‘__ge__‘,’__getattribute__‘, ‘__gt__‘, ‘__hash__‘, ‘__init__‘, ‘__init_subclass__‘, ‘__le__‘, ‘__lt__‘, ‘__module__‘, ‘__ne__‘,’__new__‘, ‘__reduce__‘, ‘__reduce_ex__‘, ‘__repr__‘, ‘__setattr__‘, ‘__sizeof__‘, ‘__str__‘, ‘__subclasshook__‘,’__weakref__‘, ‘_bar’, ‘foo’]</p>
+</blockquote>
+<p>可以看出,<code>__baz</code>这个变量的名称被改为了<code>_Test__baz</code>.这是解释器的一种叫做名称重整的行为.这样做是为了防止这个变量被子类覆盖.</p>
+<p>可以尝试写一个类来继承<code>Test</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ExtendedTest</span>(<span class="title class_ inherited__">Test</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.foo = <span class="string">&#x27;overridden&#x27;</span></span><br><span class="line">        self._bar = <span class="string">&#x27;overridden&#x27;</span></span><br><span class="line">        self.__baz = <span class="string">&#x27;overridden&#x27;</span></span><br><span class="line"></span><br><span class="line">t2 = ExtendedTest()</span><br><span class="line">t2.foo</span><br><span class="line">t2._bar</span><br><span class="line">t2.__baz</span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>overridden<br/><br>overridden<br/><br>AttributeError:”‘ExtendedTest’ object has no attribute ‘__baz’”</p>
+</blockquote>
+<p>为什么会报错?因为又发生了名称重整:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">dir</span>(t2)</span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>[‘_ExtendedTest__baz’, ‘_Test__baz’, ‘__class__‘, ‘__delattr__‘, ‘__dict__‘, ‘__dir__‘, ‘__doc__‘, ‘__eq__‘, ‘__format__‘, ‘__ge__‘, ‘__getattribute__‘, ‘__gt__‘, ‘__hash__‘, ‘__init__‘, ‘__init_subclass__‘, ‘__le__‘, ‘__lt__‘, ‘__module__‘, ‘__ne__‘, ‘__new__‘, ‘__reduce__‘, ‘__reduce_ex__‘, ‘__repr__‘, ‘__setattr__‘, ‘__sizeof__‘, ‘__str__‘, ‘__subclasshook__‘, ‘__weakref__‘, ‘_bar’, ‘foo’]</p>
+</blockquote>
+<p>可以看到, <code>ExtendedTest</code>的 <code>__baz</code>变成了<code>_ExtendedTest__baz</code>.而且父类的<code>_Test__baz</code>也仍然存在.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t2._Test__baz</span><br><span class="line">t2._ExtendedTest__baz</span><br></pre></td></tr></table></figure>
+
+<p>名称重整对程序员来说是完全透明的.看一个例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ManglingTest</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        self.__mangled = <span class="string">&#x27;hello&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_mangled</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> self.__mangled</span><br><span class="line"></span><br><span class="line">mt = ManglingTest()</span><br><span class="line">mt.get_mangled()</span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>hello</p>
+</blockquote>
+<p>可以看出,在类内部访问以双引号开头的变量<code>__mangled</code>,是不需要知道它经过重整后的名字的.</p>
+<p>名称重整也会作用于方法.例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MangledMethod</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__method</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="number">42</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call_it</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> self.__method()</span><br><span class="line"></span><br><span class="line">mm = MangledMethod()</span><br><span class="line">mm.call_it()</span><br><span class="line">mm.__method()</span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>42<br/><br>AttributeError: ‘MangledMethod’ object has no attribute ‘__method’</p>
+</blockquote>
+<p>可以看出,因为名称重整,<code>MangledMethod</code>不存在名为<code>__method</code>的成员了.</p>
+<p>下面看一个会让人惊讶的例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">_MangledGlobal__mangled = <span class="number">11</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MangledGlobal</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> __mangled</span><br><span class="line"></span><br><span class="line">MangledGlobal().test()</span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>11</p>
+</blockquote>
+<p><code>_MangledGlobal__mangled</code>是一个全局变量,但在<code>MangledGlobal</code>的内部,居然通过<code>__mangled</code>就可以访问它.显然,名称重整在其中又起了作用.这个例子显示了名称重整针对的是类中出现的所有以双下划线开头的变量,而不只是内的成员变量.</p>
+<h3 id="啥是dunders"><a href="#啥是dunders" class="headerlink" title="啥是dunders?"></a>啥是dunders?</h3><p>如果你曾听过一些Python老鸟讨论Python或一些Python相关的演讲,你可能听到过这个单词:<code>dunder</code>.你肯定会疑惑这个单词时啥意思.</p>
+<p>其实答案很简单:这是Python社区对<code>double underscore</code>的称呼.原因是双下滑线在Python中很常见,以至于如果总是使用英文<code>double underscore</code>称呼它会让你下巴脱臼,所以使用了这么一个缩写来指代它.例如,<code>__baz</code>读作”dunder  baz”,<code>__init__</code>读作”dunder init”. </p>
+<h3 id="前后双下划线-”-var-“"><a href="#前后双下划线-”-var-“" class="headerlink" title="前后双下划线:”__var__“"></a>前后双下划线:”__var__“</h3><p>说起来可能会让你惊讶,名称重整不会作用于名称以双下划线开头和结尾的变量.例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PrefixPostfixTest</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        self.__bam__ = <span class="number">42</span></span><br><span class="line"></span><br><span class="line">PrefixPostfixTest().__bam__</span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>42</p>
+</blockquote>
+<p>但是,在Python中以双下划线开头和结尾的名称是被保留做特殊用途的.比如<code>__init__</code>用于对象构造器,<code>__call__</code>是对象可以像方法一样调用.这些方法被称为”dunder methods”或”magic methods”,但后者并不合适,它会让人觉得使用这些方法并不被鼓励(就像magic number),而实际情况并非如此.它们是Python语言的核心要素,在必要的时候就应该使用它们.它们没有什么神奇的或难懂的东西.</p>
+<p>我们还是要<strong>避免使用这种命名模式</strong>,因为这可能让你的代码和未来的Python版本发生冲突.</p>
+<h3 id="单下划线-”-”"><a href="#单下划线-”-”" class="headerlink" title="单下划线:”_”"></a>单下划线:”_”</h3><p>单个下划线作为变量名,说明这个变量是临时的或无足轻重的,给它一个名称没什么意义,所以就是简单的用<code>_</code>来为它命名.</p>
+<p>例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Hello,World&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>还可以在解包的时候用<code>_</code>表示一个你不关心的变量.这只是一个命名习惯,不会触发任何解释器的行为.<code>_</code>仅仅是一个有效的变量名.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">car = (<span class="string">&#x27;red&#x27;</span>, <span class="string">&#x27;auto&#x27;</span>, <span class="number">12</span>, <span class="number">3812.4</span>)</span><br><span class="line">color, _, _, mileage = car</span><br><span class="line">color</span><br><span class="line">mileage</span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>red<br/><br>3812.4</p>
+</blockquote>
+<p>在大多数Python REPL中,<code>_</code>还表示最近一个表达式的结果.</p>
+<h2 id="关于字符串格式化的惊人事实"><a href="#关于字符串格式化的惊人事实" class="headerlink" title="关于字符串格式化的惊人事实"></a>关于字符串格式化的惊人事实</h2><p>在著名的&lt;&lt;Python之禅&gt;&gt;中,有一句是说”应该有一个明确的方式去完成某件事”.但事实上,Python中却有四种方法可以对字符串进行格式化!</p>
+<p>先定义两个变量:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">errno = <span class="number">50159747054</span></span><br><span class="line">name = <span class="string">&#x27;Bob&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们想要基于这两个变量来生成一个字符串:</p>
+<blockquote>
+<p>Hey Bob, there is a 0xbadc0ffee error!</p>
+</blockquote>
+<p>接下来会分别使用四种方式来完成这个任务,同时对它们的优点和缺点逐一介绍,并阐述选取最合适的字符串格式化方式的经验准则.</p>
+<h3 id="“旧式”的字符串格式化"><a href="#“旧式”的字符串格式化" class="headerlink" title="“旧式”的字符串格式化"></a>“旧式”的字符串格式化</h3><p>Python的字符串有一个独特的内置操作,通过操作符<code>%</code>调用.它是一个进行基于位置的格式化的快捷操作.类似于C中的<code>printf</code>.例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;Hello, %s&#x27;</span> % name</span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>Hello,Bob</p>
+</blockquote>
+<p>其中的<code>%s</code>是格式声明符,它会告诉Python在字符串的什么位置替换为<code>name</code>的值,以字符串的形式.还有很多其他的格式声明符可以用来控制输出的格式,比如有的可以把数字转换成16进制表示或填充空格来生成格式漂亮的表和报告.</p>
+<p><code>%x</code>就可以把int类型的值转成string并以16进制表示:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">n = <span class="string">&#x27;%x&#x27;</span> % errno</span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>badc0ffee</p>
+</blockquote>
+<p>如果你想要对单个字符串进行多次替换,你需要把这多个参数放到一个元组中,因为<code>%</code>只接收一个参数.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;Hey %s, there is a 0x%x error!&#x27;</span> % (name, errno)</span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>Hey Bob, there is a 0xbadc0ffee error!</p>
+</blockquote>
+<p>你还可以在格式化字符中通过名称来指向替换变量,这种情况传递给<code>%</code>的参数是一个名称和遍历的映射关系.例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;Hey %(name)s, there is a 0x%(errno)x error!&#x27;</span> % &#123;<span class="string">&quot;name&quot;</span>: name, <span class="string">&quot;errno&quot;</span>: errno&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>Hey Bob, there is a 0xbadc0ffee error!</p>
+</blockquote>
+<p>这种方式会让你的代码更容易维护和修改,因为你不需要关系传入的值的顺序是否和格式化字符串中的一致.当然,它的缺点是会增加代码量.</p>
+<h3 id="“新式”的字符串格式化"><a href="#“新式”的字符串格式化" class="headerlink" title="“新式”的字符串格式化"></a>“新式”的字符串格式化</h3><p>Python3引入了一种新的字符串格式化的方式,它后来还被移植到了2.7中.新的方式摆脱了奇怪的<code>%</code>符号,使得字符串的格式化更加标准.格式化现在只要对字符串对象调用<code>format</code>方法就可以了.例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">&#x27;Hello,&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(name)</span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>Hello,Bob</p>
+</blockquote>
+<p>这种方法同样可以在格式化字符中通过名称来指向替换变量.例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;Hey &#123;name&#125;, there is a 0x&#123;errno:x&#125; error!&#x27;</span>.<span class="built_in">format</span>(name=name, errno=errno)</span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>Hey Bob, there is a 0xbadc0ffee error!</p>
+</blockquote>
+<p>这也展示了如何格式化一个int值为十六进制的字符串,只需要在字符串中的变量名后加一个<code>:x</code>后缀.</p>
+<p>在Python3中,这种方式比旧式的更受人喜欢,但从Python3.6开始,有了一种更好的格式化字符串的方法.</p>
+<h3 id="字符串字面量插入-Python3-6"><a href="#字符串字面量插入-Python3-6" class="headerlink" title="字符串字面量插入(Python3.6+)"></a>字符串字面量插入(Python3.6+)</h3><p>Python3.6加入加入了一种叫做格式化字符串字面量的方法.这种格式化字符串的方法让我们可以再字符串常量中加入内嵌的表达式.一个简单的例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">f&#x27;Hello,<span class="subst">&#123;name&#125;</span>&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这种方法非常强大,因为你可以嵌入任何的表达式,包括算术运算.例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">f&#x27;Five plus ten is <span class="subst">&#123;a + b&#125;</span> and not <span class="subst">&#123;<span class="number">2</span> * (a + b)&#125;</span>.&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>Five plus ten is 15 and not 30.</p>
+</blockquote>
+<p>在底层,格式化字符串字面量是Python解释器的一项特性,它会把这些f开头的字符串转换成字符串常量和表达式,然后把他们拼接起来来组成最终的字符串.</p>
+<p>一个例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">greet</span>(<span class="params">name, question</span>):</span><br><span class="line">	    <span class="keyword">return</span> <span class="string">f&quot;Hello, <span class="subst">&#123;name&#125;</span>! How&#x27;s it <span class="subst">&#123;question&#125;</span>?&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>把这个函数反汇编,你可以看到这个函数被转换成了类似下面的形式:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">greet</span>(<span class="params">name, question</span>):</span><br><span class="line">	    <span class="keyword">return</span> (<span class="string">&quot;Hello, &quot;</span> + name + <span class="string">&quot;! How&#x27;s it &quot;</span> + question + <span class="string">&quot;?&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>当然,实际的实现方式更搞笑,它使用了<code>BUILD_STRING</code>这个opcode(Python源代码编译之后的格式,类似Java字节码)作为优化.但它们最终的效果是一样的.</p>
+<p>它也支持和<code>format</code>方法类似的格式化语法.例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">f&quot;Hey <span class="subst">&#123;name&#125;</span>, there is a <span class="subst">&#123;errno:#x&#125;</span> error!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>Hey Bob, there is a 0xbadc0ffee error!</p>
+</blockquote>
+<h3 id="模板字符串"><a href="#模板字符串" class="headerlink" title="模板字符串"></a>模板字符串</h3><p>还有一个字符串格式化的方式是模板字符串,这种方式更简单,但没那么强大.有些情况使用它还是非常合适的.</p>
+<p>例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> string <span class="keyword">import</span> Template</span><br><span class="line">t = Template(<span class="string">&#x27;Hello,$name&#x27;</span>)</span><br><span class="line">t.substitute(name=name)</span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>Hello,Bob</p>
+</blockquote>
+<p>可以看到使用模板字符串需要导入<code>Template</code>这个类.它不是Python的一个核心语言特性,但它存在于标准库中.</p>
+<p>另一个区别是,它不支持格式化声明符.所以需要我们自己把int转换成十六进制的字符串.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">templ_string = <span class="string">&#x27;Hey $name, there is a $error error!&#x27;</span></span><br><span class="line">Template(templ_string).substitute(name=name, error=<span class="built_in">hex</span>(errno))</span><br></pre></td></tr></table></figure>
+
+<p>什么时候使用这个方法呢?一般来说,如果格式化字符串是用户自己输入的,那么可以使用这个方法,因为它更加安全.看一个例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SECRET = <span class="string">&#x27;this-is-a-secret&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Error</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">err = Error()</span><br><span class="line">user_input = <span class="string">&#x27;&#123;error.__init__.__globals__[SECRET]&#125;&#x27;</span></span><br><span class="line">user_input.<span class="built_in">format</span>(error=err)</span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>this-is-a-secret</p>
+</blockquote>
+<p>可以看到,攻击者可以拿到<code>SECRET</code>这个字符串的,这是一个安全漏洞.而模板字符串可以避免这个问题.</p>
+<p>例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user_input = <span class="string">&#x27;$&#123;error.__init__.__globals__[SECRET]&#125;&#x27;</span></span><br><span class="line">Template(user_input).substitute(error=err)</span><br></pre></td></tr></table></figure>
+
+<p>输出:</p>
+<blockquote>
+<p>ValueError:”Invalid placeholder in string: line 1, col 1”</p>
+</blockquote>
+<h3 id="怎么选择格式化字符串的方式"><a href="#怎么选择格式化字符串的方式" class="headerlink" title="怎么选择格式化字符串的方式"></a>怎么选择格式化字符串的方式</h3><p>有一个简单的规则:如果需要格式化的字符串是用户提供的,那么使用模板字符串来避免安全问题.否则,使用格式化字符串字面量如果是在Python3.6及以上版本,使用字符串的<code>format</code>的方法如果是在较旧的版本.</p>
+<h2 id="Python之禅"><a href="#Python之禅" class="headerlink" title="Python之禅"></a>Python之禅</h2><p>只要是Python的书,基本绕不开Tim Peter的&lt;&lt;Python之禅&gt;&gt;.这首诗让人受益良多,历久弥新.它可以让我们成为一个更好的程序员,因为它里面的这些道理适用于几乎所有编程语而不局限于Python.</p>
+<p>Python中有一个关于它的彩蛋,在Python REPL中输入下面的指令:</p>
+<blockquote>
+<p>import this</p>
+</blockquote>
+<p>&lt;&lt;Python之禅&gt;&gt;就会被打印出来:</p>
+<blockquote>
+<p>The Zen of Python, by Tim Peters<br/><br><br/><br>Beautiful is better than ugly.<br/><br>Explicit is better than implicit.<br/><br>Simple is better than complex.<br/><br>Complex is better than complicated.<br/><br>Flat is better than nested.<br/><br>Sparse is better than dense.<br/><br>Readability counts.<br/><br>Special cases aren’t special enough to break the rules.<br/><br>Although practicality beats purity.<br/><br>Errors should never pass silently.<br/><br>Unless explicitly silenced.<br/><br>In the face of ambiguity, refuse the temptation to guess.<br/><br>There should be one– and preferably only one –obvious way to do it.<br/><br>Although that way may not be obvious at first unless you’re Dutch.<br/><br>Now is better than never.<br/><br>Although never is often better than <em>right</em> now.<br/><br>If the implementation is hard to explain, it’s a bad idea.<br/><br>If the implementation is easy to explain, it may be a good idea.<br/><br>Namespaces are one honking great idea – let’s do more of those!</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python-Tricks/" rel="tag"># Python Tricks</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/05/29/2019-5-29-%E5%AD%A6%E4%B9%A0Java9-11/" rel="prev" title="学习Java9~11">
+      <i class="fa fa-chevron-left"></i> 学习Java9~11
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/06/21/2022-6-21-%E5%AD%A6%E4%B9%A0Java12-17/" rel="next" title="学习Java12~17.md">
+      学习Java12~17.md <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%96%84%E7%94%A8assert"><span class="nav-number">1.</span> <span class="nav-text">善用assert</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AAassert%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">1.1.</span> <span class="nav-text">一个assert的例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E4%BD%BF%E7%94%A8%E4%B8%80%E8%88%AC%E7%9A%84%E5%BC%82%E5%B8%B8"><span class="nav-number">1.2.</span> <span class="nav-text">为什么不使用一般的异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#assert%E7%9A%84%E8%AF%AD%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">assert的语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#assert%E7%9A%84%E9%99%B7%E9%98%B1"><span class="nav-number">1.4.</span> <span class="nav-text">assert的陷阱</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%85%E8%B6%B3%E7%9A%84%E9%80%97%E5%8F%B7"><span class="nav-number">2.</span> <span class="nav-text">充足的逗号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86%E5%99%A8%E5%92%8Cwith%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">上下文管理器和with表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A9%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B%E6%94%AF%E6%8C%81with"><span class="nav-number">3.1.</span> <span class="nav-text">让自定义类型支持with</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8context-manager%E5%86%99%E5%87%BA%E6%9B%B4%E6%BC%82%E4%BA%AE%E7%9A%84API"><span class="nav-number">3.2.</span> <span class="nav-text">使用context manager写出更漂亮的API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E5%88%92%E7%BA%BF-dunders%E5%92%8C%E5%85%B6%E4%BB%96"><span class="nav-number">4.</span> <span class="nav-text">下划线,dunders和其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E4%B8%8B%E5%88%92%E7%BA%BF%E5%BC%80%E5%A4%B4-%E2%80%9D-var%E2%80%9D"><span class="nav-number">4.1.</span> <span class="nav-text">单下划线开头:”_var”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E4%B8%8B%E5%88%92%E7%BA%BF%E7%BB%93%E5%B0%BE-%E2%80%9Dvar-%E2%80%9D"><span class="nav-number">4.2.</span> <span class="nav-text">单下划线结尾:”var_”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8C%E4%B8%8B%E5%88%92%E7%BA%BF%E5%BC%80%E5%A4%B4-%E2%80%9D-var%E2%80%9D"><span class="nav-number">4.3.</span> <span class="nav-text">双下划线开头:”__var”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%95%A5%E6%98%AFdunders"><span class="nav-number">4.4.</span> <span class="nav-text">啥是dunders?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E5%90%8E%E5%8F%8C%E4%B8%8B%E5%88%92%E7%BA%BF-%E2%80%9D-var-%E2%80%9C"><span class="nav-number">4.5.</span> <span class="nav-text">前后双下划线:”__var__“</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E4%B8%8B%E5%88%92%E7%BA%BF-%E2%80%9D-%E2%80%9D"><span class="nav-number">4.6.</span> <span class="nav-text">单下划线:”_”</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A0%BC%E5%BC%8F%E5%8C%96%E7%9A%84%E6%83%8A%E4%BA%BA%E4%BA%8B%E5%AE%9E"><span class="nav-number">5.</span> <span class="nav-text">关于字符串格式化的惊人事实</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%80%9C%E6%97%A7%E5%BC%8F%E2%80%9D%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="nav-number">5.1.</span> <span class="nav-text">“旧式”的字符串格式化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%80%9C%E6%96%B0%E5%BC%8F%E2%80%9D%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="nav-number">5.2.</span> <span class="nav-text">“新式”的字符串格式化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AD%97%E9%9D%A2%E9%87%8F%E6%8F%92%E5%85%A5-Python3-6"><span class="nav-number">5.3.</span> <span class="nav-text">字符串字面量插入(Python3.6+)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">5.4.</span> <span class="nav-text">模板字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%8E%E4%B9%88%E9%80%89%E6%8B%A9%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">5.5.</span> <span class="nav-text">怎么选择格式化字符串的方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python%E4%B9%8B%E7%A6%85"><span class="nav-number">6.</span> <span class="nav-text">Python之禅</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">JunJie Zi</p>
+  <div class="site-description" itemprop="description">Java,Clojure,Scala...</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zjjfly" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zjjfly" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zjjblue@gmail.com" title="E-Mail → mailto:zjjblue@gmail.com" rel="noopener" target="_blank"><i class="fab fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JunJie Zi</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

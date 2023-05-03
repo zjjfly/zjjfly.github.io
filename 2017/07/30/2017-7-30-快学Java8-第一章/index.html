@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zjjfly.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":250,"display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="最近开始看&lt;&lt;写给大忙人看到Java SE 8&gt;&gt;,由于和我看过的《快学Scala》是一个系列的，所以姑且叫它《快学Java8》。这一篇是第一章的看书笔记，以后每个章节也都会有一篇笔记。 为什么要引入Lambda表达式Java引入的最重要的特性是lambda表达式。lambda表达式实际上是一段可以传递的代码。在Java8之前，由于Java的设计问题，要传递代码必须构造一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="快学Java8(第一章)">
+<meta property="og:url" content="https://zjjfly.github.io/2017/07/30/2017-7-30-%E5%BF%AB%E5%AD%A6Java8-%E7%AC%AC%E4%B8%80%E7%AB%A0/index.html">
+<meta property="og:site_name" content="zjjfly&#39;s blog">
+<meta property="og:description" content="最近开始看&lt;&lt;写给大忙人看到Java SE 8&gt;&gt;,由于和我看过的《快学Scala》是一个系列的，所以姑且叫它《快学Java8》。这一篇是第一章的看书笔记，以后每个章节也都会有一篇笔记。 为什么要引入Lambda表达式Java引入的最重要的特性是lambda表达式。lambda表达式实际上是一段可以传递的代码。在Java8之前，由于Java的设计问题，要传递代码必须构造一个">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-07-30T01:32:28.000Z">
+<meta property="article:modified_time" content="2023-05-03T01:48:55.609Z">
+<meta property="article:author" content="JunJie Zi">
+<meta property="article:tag" content="Java Java8">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://zjjfly.github.io/2017/07/30/2017-7-30-%E5%BF%AB%E5%AD%A6Java8-%E7%AC%AC%E4%B8%80%E7%AB%A0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh'
+  };
+</script>
+
+  <title>快学Java8(第一章) | zjjfly's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="zjjfly's blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">zjjfly's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="https://zjjfly.github.io/2017/07/30/2017-7-30-%E5%BF%AB%E5%AD%A6Java8-%E7%AC%AC%E4%B8%80%E7%AB%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="JunJie Zi">
+      <meta itemprop="description" content="Java,Clojure,Scala...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zjjfly's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          快学Java8(第一章)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-07-30 09:32:28" itemprop="dateCreated datePublished" datetime="2017-07-30T09:32:28+08:00">2017-07-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-05-03 09:48:55" itemprop="dateModified" datetime="2023-05-03T09:48:55+08:00">2023-05-03</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近开始看&lt;&lt;写给大忙人看到Java SE 8&gt;&gt;,由于和我看过的《快学Scala》是一个系列的，所以姑且叫它《快学Java8》。这一篇是第一章的看书笔记，以后每个章节也都会有一篇笔记。</p>
+<h2 id="为什么要引入Lambda表达式"><a href="#为什么要引入Lambda表达式" class="headerlink" title="为什么要引入Lambda表达式"></a>为什么要引入Lambda表达式</h2><p>Java引入的最重要的特性是lambda表达式。lambda表达式实际上是一段可以传递的代码。在Java8之前，由于Java的设计问题，要传递代码必须构造一个类的对象，它的某个方法包含了需要的代码。看个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LengthComparator</span> <span class="keyword">implements</span> <span class="title class_">Comparator</span>&lt;String&gt;&#123;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compare</span><span class="params">(String o1, String o2v)</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> Integer.compare(o1.length(),o2.length());</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">String[] strings = &#123;<span class="string">&quot;a&quot;</span>, <span class="string">&quot;bcd&quot;</span>, <span class="string">&quot;ef&quot;</span>&#125;;</span><br><span class="line">Arrays.sort(strings, <span class="keyword">new</span> <span class="title class_">LengthComparator</span>());</span><br></pre></td></tr></table></figure>
+
+<p>而其他一些语言可以直接传递代码块。一开始Java的设计者不想要加入这一特性，但随着函数式编程越来越流行，终于在Java8中，我们可以使用lambda来传递代码了。</p>
+<h2 id="lambda的语法"><a href="#lambda的语法" class="headerlink" title="lambda的语法"></a>lambda的语法</h2><p>lambda由参数，箭头(-&gt;),表达式组成。我们用lambda重写上面的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String[] strings = &#123;<span class="string">&quot;a&quot;</span>, <span class="string">&quot;bcd&quot;</span>, <span class="string">&quot;ef&quot;</span>&#125;;</span><br><span class="line">Arrays.sort(strings,(String o1,String o2) -&gt; Integer.compare(o1.length(),o2.length()));</span><br></pre></td></tr></table></figure>
+
+<p>如果代码不止不止一行，那么可以使用花括号把多行代码包裹起来：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Arrays.sort(strings,(String o1,String o2) -&gt;&#123;</span><br><span class="line">    <span class="keyword">if</span> (o1.length()&gt;o2.length()) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (o1.length()&lt;o2.length()) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>如果lambda表达式没有参数，可以提供一对空的括号：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">        System.out.println(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>如果labmda表达式的参数类型是可以被推导出来的，可以省略它们的类型，实际上，<strong>大多数情况</strong>就是这样的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Comparator&lt;String&gt; comp=(first,second)-&gt;Integer.compare(first.length(),second.length());</span><br></pre></td></tr></table></figure>
+
+<p>这里就可以推导出<code>first</code>,<code>second</code>的类型是字符串，因为<code>comp</code>被声明为一个字符串比较器。<br>如果某个lambda表达式只有一个参数，并且它的参数类型是可以被推导出来的，那么我们可以省略括号。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EventHandler&lt;ActionEvent&gt; listener=event -&gt; System.out.println(<span class="string">&quot;Click&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>不需要</strong>为lambda表达式声明返回值类型，它会从上下文被推导出。</p>
+<h2 id="函数式接口"><a href="#函数式接口" class="headerlink" title="函数式接口"></a>函数式接口</h2><p>Java中很多已有的接口都是用来封装代码块的，例如<code>Runnable</code>,<code>Comparator</code>。lambda表达式与这些接口是兼容的。<br>那些只包含一个抽象方法的接口，我们可以使用lambda来创建该接口的对象，这种接口被称为函数式接口。<br>你可能会奇怪为什么只能有一个抽象方法，难道接口的方法不都是抽象的吗？事实上，<strong>接口经常会重新声明Object类中的方法，为了关联Javadoc的注释</strong>，<code>Comparator</code>就是例子。而且，Java8的接口也可以声明非抽象方法。<br>实际上，lambda唯一做的事情就是函数式接口的转换。在其他语言中，函数可能就是一致类型，但在Java中，<strong>lambda表达式实际还是接口的对象</strong>。<br>在<code>java.util.funtion</code>包中，定义了很多非常通用的函数式接口(我们会在之后两章提到)。其中，有一个<code>BiFuntion&lt;T,U,R&gt;</code>，描述了参数类型是T和U并且返回值类型是R的函数。我们可以把上面的字符串比较的lambda表达式保存在这个类型的变量中:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BiFunction&lt;String ,String ,Integer&gt; comp=(first,second)-&gt;Integer.compare(first.length(),second.length());</span><br></pre></td></tr></table></figure>
+
+<p>但这个对象对排序没有什么用，因为不存在接收<code>BiFuntion</code>作为参数的<code>Arrays.sort</code>方法。这和其他函数式语言是很不同的。<br>记住，<strong>任意一个lambda表达式都可以等价转换成现在所使用的API中对应的函数式接口</strong>。<br>你可以在任何函数式接口上标注<code>@FunctionalInterface</code>注解。这样做有两个好处：</p>
+<ul>
+<li>编译器会检查标注该注解的实体，检查它是否是只包含一个抽象方法的接口。</li>
+<li>在Javadoc页面会包含一条声明，说明这个接口是函数式接口。</li>
+</ul>
+<p>这个注解不是强制要求的，但是为了规范代码，<strong>对于函数式接口，都要加上这个注解。</strong><br>最后，当一个lambda表达式被转换成一个函数式接口实例的时候，要注意处理检查时异常。如果lambda表达式可能抛出检查时异常，那么该异常需要在目标接口的抽象方法中进行声明。一下代码会产生一个错误：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Runnable sleep=() -&gt; &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Zzz&quot;</span>);</span><br><span class="line">    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>Runnable.run</code>方法是不能抛出异常的，所以这个赋值是不合法的。解决的方法有两个：</p>
+<ul>
+<li>在lambda表达式中捕获异常</li>
+<li>把lambda表达式赋值给一个其抽象方法可以抛出异常的接口。</li>
+</ul>
+<h2 id="方法引用"><a href="#方法引用" class="headerlink" title="方法引用"></a>方法引用</h2><p>有时候，我们想要传递的代码已经有实现的方法了。例如，你只想打印数组中的元素，按照之前的做法，代码可以这么写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Arrays.stream(<span class="keyword">new</span> <span class="title class_">int</span>[]&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;).forEach(i-&gt; System.out.println(i));</span><br></pre></td></tr></table></figure>
+
+<p>但其实我们可以直接把方法传递给<code>forEach</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Arrays.stream(<span class="keyword">new</span> <span class="title class_">int</span>[]&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;).forEach(System.out::println);</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>System.out::println</code>是一个方法引用，等同于<code>x-&gt;System.out.println(x)</code>。在举一个例子，假如你想不区分大小写地对字符串进行排序，那么可以这样写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Arrays.sort(<span class="keyword">new</span> <span class="title class_">String</span>[]&#123;<span class="string">&quot;a&quot;</span>,<span class="string">&quot;bcd&quot;</span>,<span class="string">&quot;ef&quot;</span>&#125;,String::compareToIgnoreCase);</span><br></pre></td></tr></table></figure>
+
+<p>正如实例代码所示，<code>::</code>操作符把实例或者类的名字和方法名分隔开。下面是三种主要的用法：</p>
+<ul>
+<li>对象::实例方法</li>
+<li>类::静态方法</li>
+<li>类::实例方法</li>
+</ul>
+<p>前两种情况，方法引用等同于接收参数并调用方法的lambda表达式，<code>System.out::println</code>等同于<code>x-&gt;System.out.println(x)</code>，<code>Math::pow</code>等同于<code>(x,y)-&gt;Math.pow(x,y)</code>。<br>第三种情况，<strong>传入的第一个参数会成为执行方法的对象</strong>，例如<code>String::compareToIgnoreCase</code>，等价于<code>(x,y)-&gt;x.compareToIgnoreCase(y)</code>。<br>如果有多个同名的重载方法，编译器会试图从上下文中找到最匹配的方法，主要是通过方法参数确定。<br>和lambda表达式一样，方法引用也不会独立存在，它们经常被用于转换成函数式接口的实例。<br><strong>你可以在方法引用中使用this和super变量</strong>。<code>this::equals</code>等价于<code>x-&gt;this.equals(x)</code>。使用super可以引用父类的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Greeter</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">greet</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Hello World&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConcurrentGreeter</span> <span class="keyword">extends</span> <span class="title class_">Greeter</span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">greet</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="built_in">super</span>::greet);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意，在一个内部类中，你可以捕获闭合类型的<code>this</code>或<code>super</code>的引用,格式是<code>EnclosingClass.this::method</code>或<code>EnclosingClass.super::method</code>。看一个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Greeter</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">greet</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Hello World&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConcurrentGreeter</span> &#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">CGreeter</span> <span class="keyword">extends</span> <span class="title class_">Greeter</span> &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">greet</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">Thread</span>(ConcurrentGreeter.<span class="built_in">this</span>::greet).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">greet</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Out Hello World&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">ConcurrentGreeter</span> <span class="variable">concurrentGreeter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ConcurrentGreeter</span>();</span><br><span class="line">ConcurrentGreeter.<span class="type">CGreeter</span> <span class="variable">cGreeter</span> <span class="operator">=</span> concurrentGreeter.<span class="keyword">new</span> <span class="title class_">CGreeter</span>();</span><br><span class="line">cGreeter.greet();</span><br></pre></td></tr></table></figure>
+
+<h2 id="构造器引用"><a href="#构造器引用" class="headerlink" title="构造器引用"></a>构造器引用</h2><p>构造器引用和方法应用是一样的，只是方法名<strong>固定是new</strong>。如果有多个构造器，那么选哪个呢？和方法引用遇到的问题的答案一样，这取决于上下文。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; labels = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">labels.add(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">labels.add(<span class="string">&quot;b&quot;</span>);</span><br><span class="line">List&lt;Button&gt; buttons = labels.stream().map(Button::<span class="keyword">new</span>).collect(Collectors.toList());</span><br></pre></td></tr></table></figure>
+
+<p>存在着多个Button构造器，但是编译器会选择有一String参数的构造器，因为它从上下文推测出调用构造器使用一个String。<br>你可以使用数组类型来建立构造器引用。比如，<code>int[]::new</code>是带一个参数的构造器引用,这个参数就是数组长度。它等价于<code>x-&gt;new int[x]</code>。<br>使用数组构造器引用可以很好的克服一个Java的限制。我们知道Java有类型擦除机制，所以在设计库的时候，<code>new T[]</code>这样是错误的，类型擦除会把它变成<code>new Object[]</code>。所以，<code>Stream</code>的一个方法<code>toArray</code>，它返回的类型是<code>Object</code>数组。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object[] btns = buttons.stream().toArray();</span><br></pre></td></tr></table></figure>
+
+<p>但这样并不尽如人意，用户肯定是想要一个<code>Button</code>数组。通过数组构造器引用，Stream库解决了这个问题。你可以把<code>Button[]::new</code>传入<code>toArray</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Button[] btns2= buttons.stream().toArray(Button[]::<span class="keyword">new</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="变量作用域"><a href="#变量作用域" class="headerlink" title="变量作用域"></a>变量作用域</h2><p>我们常常想要lambda表达式可以访问闭合方法或类中的变量。看下面的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">repeatMessage</span><span class="params">(String msg,<span class="type">int</span> count)</span>&#123;</span><br><span class="line">    Runnable runnable=() -&gt; &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; count; i++) &#123;</span><br><span class="line">            System.out.println(msg);</span><br><span class="line">            Thread.<span class="keyword">yield</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Thread</span>(runnable).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看一下变量<code>msg</code>和<code>count</code>，它们都不是定义在lambda表达式中，而是方法<code>repeatMessage</code>的参数。<br>如果你仔细想想，这个lambda可能会运行很长时间，方法<code>repeatMessage</code>的调用已经返回，方法的参数也没了，那么<code>msg</code>和 <code>count</code>是怎么一直存在的呢？要理解发生了什么，需要先改变我们对lambda表达式的理解。一个lambda表达式有三个元素：</p>
+<ul>
+<li>一个代码块</li>
+<li>参数</li>
+<li><strong>自由变量的值。自由变量是指那些既不是lambda表达式的参数也不是在lambda代码块中的定义的变量</strong></li>
+</ul>
+<p>上面代码中的<code>msg</code>和<code>count</code>就是自由变量。可以说，这两个值已经被lambda<strong>捕获</strong>了。这是一个技术上的细节，如果你将一个lambda转换成一个只含有一个方法的对象，那么自由变量的值就会被复制到该对象的实例变量中。<br><strong>我们称含有自由变量的代码块为闭包</strong>。实际上，<strong>内部类一直都是闭包</strong>。Java8为闭包赋予了更吸引人的语法。<br>为了确保被捕获的值是良好定义的，需要遵守一个重要的约束：在lambda表达式中，被引用的变量的值不可以被更改。所以，下面的代码是不合法的：![java8-1-1.png](&#x2F;images&#x2F;20170730&#x2F;java8-1-1.png)<br>做出这种约束的原因是，<strong>更改lambda表达式中的变量不是线程安全的</strong>。<br>内部类也会捕获闭合作用域中的值。Java8之前，内部类只允许访问final的局部变量，为了适应lambda表达式，这条规则在Java8被放宽，<strong>一个内部类可以访问任何有效的final局部变量，即任何不会发生变化的值，并不一定要以final修饰</strong>。<br>但不可变的约束只作用在局部变量上，<strong>如果是一个实例变量或某个闭合类的静态变量，那么不会有任何的错误提示</strong>。同样的，改变一个共享对象也是完全合法的，即使这样不是很恰当：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; nums = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i%<span class="number">2</span>==<span class="number">0</span>) nums.add(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>nums</code>是有效final的，因为它在初始化后没有被赋予新的值。但是，它内部的元素是可以修改的，所以仍然不是线程安全的。后面会介绍一些线程安全的集合。<br>既然lambda中引用的外部变量是不能更改的，那么怎么实现一个计数器呢？这个问题在使用内部类的时候就已经存在，方法是使用一个的长度为1的数组：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> counter[]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">Runnable runnable=() -&gt; &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; count; i+</span><br><span class="line">        counter[<span class="number">0</span>]++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>lambda表达式中不允许声明一个与局部变量同名的参数或者局部变量：![java8-1-2.png](&#x2F;images&#x2F;20170730&#x2F;java8-1-2.png)<br><strong>当你在lambda表达式中使用this关键字时，你使用的是创建该lambda的方法的this参数</strong>。</p>
+<h2 id="默认方法"><a href="#默认方法" class="headerlink" title="默认方法"></a>默认方法</h2><p>很多语言都将函数表达式应用到了集合库中。Java8同样如此。但是，Java的集合库是很早就有的，如果要给<code>Collection</code>接口添加新的方法，如<code>forEach</code>,那么所有实现了<code>Collection</code>接口的类都必须实现这个方法，这令人无法接受也没有必要。Java的设计者通过允许接口带有具体实现的方法来一劳永逸的解决这个问题，这些方法就叫做默认方法。下面是一个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Person</span>&#123;</span><br><span class="line">    <span class="type">long</span> <span class="title function_">getId</span><span class="params">()</span>;</span><br><span class="line">    <span class="comment">//默认方法</span></span><br><span class="line">    <span class="keyword">default</span> String <span class="title function_">getName</span><span class="params">()</span>&#123;<span class="keyword">return</span> <span class="string">&quot;JJZI&quot;</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>默认方法终结了以前的一种经典默认：模板方法模式。</strong> 即提供一个接口，以及一个实现接口大多数或者全部方法的抽象类，然后具体实现的类继承这个抽象类，只需实现少量方法就可以。现在，你不需要额外的抽象类了，只需要在接口中实现那些方法。<br>如果一个接口定义了一个默认方法，而另一个父类或接口中定义了一个同名的方法，该如何选择。规则是这样的：</p>
+<ul>
+<li><strong>如果一个父类提供了具体的实现方法，那么接口中具有相同名称和参数的默认方法会被忽略</strong>。</li>
+<li>接口冲突。<strong>如果一个父接口提供了一个默认方法，而另一个父接口提供了一个具有相同名称和参数类型的方法(不论是不是默认方法),那么你必须通过覆盖该方法类解决冲突</strong>。</li>
+</ul>
+<p>我们来详细解释一下第二条规则。我们再定义一个接口，它也有<code>getName</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Named</span>&#123;</span><br><span class="line">    <span class="keyword">default</span> String <span class="title function_">getName</span><span class="params">()</span>&#123;<span class="keyword">return</span> getClass().getName()+<span class="string">&quot;_&quot;</span>+hashCode();&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果编写一个同时实现这<code>Person</code>和<code>Named</code>两个接口的类，编译器会报告一个错误，并交由开发人员来解决这种冲突，而不会自动选择一个。对于这种情况，只需要在这个类中提供一个<code>getName</code>方法，在改方法中再选择调用一个接口中的方法就可以了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span> <span class="keyword">implements</span> <span class="title class_">Person</span>,Named&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">long</span> <span class="title function_">getId</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> Person.<span class="built_in">super</span>.getName();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果<code>Named</code>接口没有提供<code>getName</code>方法的一个默认实现，那么<code>Student</code>会继承<code>Person</code>接口中的默认方法吗？答案是，为了保持一致性，还是选择了和之前一样的处理方法。<strong>两个或多个接口中，只要有一个接口中有默认方法，其他类中不管是有默认方法还是抽象方法，都需要开发人员手动解决冲突</strong>。<br>如果<code>Person</code>是一个类，那么<code>Student</code>只会继承<code>Person</code>的<code>getName</code>方法，不管<code>Named</code>接口中的<code>getNamed</code>方法是不是默认方法。这就是类优先原则。这个原则可以保证与Java7兼容。如果你在接口中添加了一个默认方法，那么他对Java8以前编写的代码不会有任何影响。所以，<strong>你不能为Object的方法重新定义一个默认方法，因为类优先原则会让这样的方法永远不可能优先与Object中的方法</strong>。</p>
+<h2 id="接口中的静态方法"><a href="#接口中的静态方法" class="headerlink" title="接口中的静态方法"></a>接口中的静态方法</h2><p><strong>Java8中，接口是可以添加静态方法的</strong>。技术上，这是完全没问题的，但这看起来违反了接口作为一个抽象定义的原则。<br>至今，我们经常在相互一起使用的类中使用静态方法，如标准库中的Collection&#x2F;Collections或者Path&#x2F;Paths这样成对的接口和类。以<code>Paths</code>为例子，它有一些工程方法，用来产生<code>Path</code>。在Java8中，你可以把这些方法移到<code>Path</code>接口中，这样<code>Paths</code>就没必要存在了。<br>再看<code>Collections</code>，你会看到下面的这个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">shuffle</span><span class="params">(List&lt;?&gt; list)</span></span><br></pre></td></tr></table></figure>
+
+<p>这个方法可以作为<code>List</code>接口的默认方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> defualt <span class="keyword">void</span> <span class="title function_">shuffle</span><span class="params">()</span></span><br></pre></td></tr></table></figure>
+
+<p>然后只需要在任意的list对象上调用<code>list.shuffle()</code>就可以了。<br>但是，这样无法适用于静态的工厂方法，因为没有实例来调用这个方法。因此，Java8引入了静态接口方法。例如,可以把<code>Collections</code>中的<code>nCopies</code>方法移到<code>List</code>接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; List&lt;T&gt; <span class="title function_">nCopies</span><span class="params">(<span class="type">int</span> n,T o)</span></span><br></pre></td></tr></table></figure>
+
+<p>这样就可以调用<code>List.nCopies(10,&quot;jjzi&quot;)</code>而不是<code>Collections.nCopies(10,&quot;jjzi&quot;)</code>，这样能够清楚的表示返回的结果是一个<code>List</code>。<br>虽然为了兼容性，不太可能这么大幅度的重构，但是当你实现自己的库的时候，可以考虑使用这种方式，不必在添加一个额外的辅助类存放静态方法。<br>Java8中，很多接口已经添加了静态方法。例如，<code>Comparator</code>接口提供了一个很实用的比较方法，它接受一个键提取函数，并返回一个用来比较提取出的键的比较器。比如，要根据名称对<code>Person</code>对象进行比较，可以使用函数<code>Comparator.comparing(Person::getName)</code>。<br>在之前，我们曾经使用lambda表达式<code>(first,second)-&gt;Integer.compare(first.length(),second.length())</code>，其实可以使用<code>Comparator</code>的静态比较方法，代码会更简洁。例如<code>Comparator.comparingInt(String::length)</code>。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java-Java8/" rel="tag"># Java Java8</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/07/28/2017-7-28-rsync%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/" rel="prev" title="rsync使用心得">
+      <i class="fa fa-chevron-left"></i> rsync使用心得
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/08/05/2017-8-5-Haskell%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="next" title="Haskell开发环境搭建">
+      Haskell开发环境搭建 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BC%95%E5%85%A5Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">为什么要引入Lambda表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lambda%E7%9A%84%E8%AF%AD%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">lambda的语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%BC%8F%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.</span> <span class="nav-text">函数式接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">方法引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%99%A8%E5%BC%95%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">构造器引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">6.</span> <span class="nav-text">变量作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E6%96%B9%E6%B3%95"><span class="nav-number">7.</span> <span class="nav-text">默认方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E4%B8%AD%E7%9A%84%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95"><span class="nav-number">8.</span> <span class="nav-text">接口中的静态方法</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">JunJie Zi</p>
+  <div class="site-description" itemprop="description">Java,Clojure,Scala...</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zjjfly" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zjjfly" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zjjblue@gmail.com" title="E-Mail → mailto:zjjblue@gmail.com" rel="noopener" target="_blank"><i class="fab fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JunJie Zi</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

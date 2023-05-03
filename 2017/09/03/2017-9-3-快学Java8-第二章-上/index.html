@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zjjfly.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":250,"display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="从迭代到Stream操作以前，我们要处理一个集合，一般都是迭代它的元素并对每个元素做一些操作。例如，你想计算一本书中长词的数量，首先，把书的内容放入的一行为单位放入list： 123String content &#x3D; new String(Files.readAllBytes(        Paths.get(&quot;alice.txt&quot;)), StandardCharse.UTF_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="快学Java8 第二章上">
+<meta property="og:url" content="https://zjjfly.github.io/2017/09/03/2017-9-3-%E5%BF%AB%E5%AD%A6Java8-%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%8A/index.html">
+<meta property="og:site_name" content="zjjfly&#39;s blog">
+<meta property="og:description" content="从迭代到Stream操作以前，我们要处理一个集合，一般都是迭代它的元素并对每个元素做一些操作。例如，你想计算一本书中长词的数量，首先，把书的内容放入的一行为单位放入list： 123String content &#x3D; new String(Files.readAllBytes(        Paths.get(&quot;alice.txt&quot;)), StandardCharse.UTF_">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-09-03T01:32:28.000Z">
+<meta property="article:modified_time" content="2023-05-03T01:49:17.824Z">
+<meta property="article:author" content="JunJie Zi">
+<meta property="article:tag" content="Java Java8">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://zjjfly.github.io/2017/09/03/2017-9-3-%E5%BF%AB%E5%AD%A6Java8-%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%8A/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh'
+  };
+</script>
+
+  <title>快学Java8 第二章上 | zjjfly's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="zjjfly's blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">zjjfly's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="https://zjjfly.github.io/2017/09/03/2017-9-3-%E5%BF%AB%E5%AD%A6Java8-%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%8A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="JunJie Zi">
+      <meta itemprop="description" content="Java,Clojure,Scala...">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zjjfly's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          快学Java8 第二章上
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-09-03 09:32:28" itemprop="dateCreated datePublished" datetime="2017-09-03T09:32:28+08:00">2017-09-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-05-03 09:49:17" itemprop="dateModified" datetime="2023-05-03T09:49:17+08:00">2023-05-03</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="从迭代到Stream操作"><a href="#从迭代到Stream操作" class="headerlink" title="从迭代到Stream操作"></a>从迭代到Stream操作</h2><p>以前，我们要处理一个集合，一般都是迭代它的元素并对每个元素做一些操作。例如，你想计算一本书中长词的数量，首先，把书的内容放入的一行为单位放入list：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">content</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(Files.readAllBytes(</span><br><span class="line">        Paths.get(<span class="string">&quot;alice.txt&quot;</span>)), StandardCharse.UTF_8);</span><br><span class="line">List&lt;String&gt; words = Arrays.asList(content.split(<span class="string">&quot;[\\P&#123;L&#125;]+&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>然后开始迭代：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> count=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (String word : words) &#123;</span><br><span class="line">    <span class="keyword">if</span> (word.length()&gt;<span class="number">12</span>)&#123;</span><br><span class="line">        count++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这有啥问题吗？基本没有，除了这个代码<strong>很难并行</strong>。这就是Java8引入Stream的原因。同样的操作，Java8可以这么写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span> <span class="variable">count</span> <span class="operator">=</span> words.stream().filter(w -&gt; w.length() &gt; <span class="number">12</span>).count();</span><br></pre></td></tr></table></figure>
+
+<p><code>stream</code>方法生成一个<code>words</code>列表的Stream，<code>filter</code>方法返回另一个只包含长度大于12的单词的Stream，<code>count</code>方法把Stream归并为一个结果：Stream的元素个数。<br>Stream在外表是和集合很相似，它允许你变换和抽取数据。但它们其实是非常不同的：</p>
+<ul>
+<li><strong>Stream并不存储它的元素</strong>,它们可能会存储在底层的集合中或者根据需要生成。</li>
+<li>Stream并不改变它们的数据源，相反，<strong>它们返回持有结果的新的Stream</strong>。</li>
+<li><strong>Stream操作可能是延迟执行的</strong>。这意味着它们会等到需要结果的时候才会执行。例如，如果你只需要前五个长单词，那么<code>filter</code>方法会在第五次匹配之后停止过滤。因此，你甚至可以拥有无限的流。</li>
+</ul>
+<p>很多人都觉得Stream表达式比循环更易读，此外，它们更容易并行。下面是如何并行地统计长词：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span> count=words.parallelStream().filter(w-&gt;w.length()&gt;<span class="number">12</span>).count();</span><br></pre></td></tr></table></figure>
+
+<p>只需要把<code>stream</code>方法改成<code>parallelStream</code>方法，就可以让StreamAPI并行地执行过滤和计数操作。<br>Stream遵从“做什么，而不是怎么做”这个原则。在上面的例子中，我们描述了需要做什么：获取长单词并统计。我们并不指明按什么顺序或在哪个线程中做。相反，循环一开始就指定了计算如何进行，因此失去了任何优化的机会。<br>当你使用Stream时，你会通过三个步骤来建立一个操作流水线：</p>
+<ol>
+<li>创建一个Stream</li>
+<li>在一个或多个步骤中，指定将初始的Stream转换成另一个Stream的中间操作</li>
+<li>使用一个终止操作产生一个结果。这个操作强制它之前的延迟操作立即执行，在这之后，Stream不能再被使用了。</li>
+</ol>
+<p>在我们例子中，Stream由<code>stream</code>或<code>parallelStream</code>方法产生。<code>filter</code>方法对它进行转换，<code>count</code>是终结操作。<br><strong>Stream操作不会按照元素的调用顺序执行</strong>。在上面的例子中，只有在调用<code>count</code>的时候才会执行Stream操作。当<code>count</code>需要第一个元素的时候，<code>filter</code>方法开始请求元素，直到它找到一个长度大于12的元素。</p>
+<h2 id="创建Stream"><a href="#创建Stream" class="headerlink" title="创建Stream"></a>创建Stream</h2><p>我们已经知道可以使用Java8加入<code>Collection</code>接口的<code>stream</code>方法把任何集合转变成Stream。如果你想要把数组转成Stream，可以使用静态方法<code>Stream.of</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;String&gt; words = Stream.of(content.split(<span class="string">&quot;[\\P&#123;L&#125;]+&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p><code>of</code>有一个可变的参数，所以你可以用任意数量的参数来构造Stream：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;String&gt; songs = Stream.of(<span class="string">&quot;gently&quot;</span>, <span class="string">&quot;down&quot;</span>, <span class="string">&quot;the&quot;</span>, <span class="string">&quot;stream&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>Arrays.stream(array,from,to)</code>来使数组的一部分变成Stream。<br>要创建一个空的Stream，可以使用<code>Stream.empty</code>这个静态方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;String&gt; silence = Stream.empty();</span><br></pre></td></tr></table></figure>
+
+<p><code>Stream</code>接口有两个静态方法用来创建无限Stream。<code>generate</code>方法接受一个无参数的函数(或者，技术上说，一个<code>Supplier&lt;T&gt;接口的对象</code>)。当你需要一个Stream值时，这个函数会被调用来生成一个值。你可以使用下面的代码得到一个含有常量的Stream：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;String&gt; echos = Stream.generate(() -&gt; <span class="string">&quot;Echo&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>或者一个随机数的Stream:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;Double&gt; randoms = Stream.generate(Math::random);</span><br></pre></td></tr></table></figure>
+
+<p>而要产生像”0 1 2 3 …”这样的序列，使用<code>iterate</code>方法。它接受一个种子(seed)值和一个函数(技术上来说，一个<code>UnaryOperation&lt;T&gt;</code>对象)，并且会对之前的值重复的应用该函数。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;BigInteger&gt; integers = Stream.iterate(BigInteger.ZERO, bigInteger -&gt; bigInteger.add(BigInteger.ONE));</span><br></pre></td></tr></table></figure>
+
+<p>序列的第一个值是seed，第二个值是<code>f(seed)</code>，第三个是<code>f(f(seed))</code>，以此类推。<br>Java的API中加入了不少生成Stream的方法。例如，<code>Pattern</code>类现在有一个方法<code>splitAsStream</code>可以用一个正则表达式切分<code>CharSequence</code>对象，返回一个Stream。这是例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;String&gt; splitStream = Pattern.compile(<span class="string">&quot;[\\P&#123;L&#125;]+&quot;</span>).splitAsStream(content);</span><br></pre></td></tr></table></figure>
+
+<p>静态方法<code>Files.lines</code>返回包含文件所有的行的Stream。<code>Stream</code>接口有一个<code>AutoCloseable</code>父接口。当<code>Stream</code>的<code>close</code>方法被调用的时候，底层的文件也会被关闭。为了确保<code>close</code>会被调用，可以使用Java7的try-with-resource声明：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>(Stream&lt;String&gt; lines=Files.lines(Paths.get(<span class="string">&quot;gradlew&quot;</span>))) &#123;</span><br><span class="line">    System.out.println(lines.count());</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="filter-map和flatMap方法"><a href="#filter-map和flatMap方法" class="headerlink" title="filter,map和flatMap方法"></a>filter,map和flatMap方法</h2><p>流转换是从一个流读取数据，然后把转换后的数据放入另一个流中。我们已经看到<code>filter</code>这个转换方法，它会生成一个新的流，其中包含了满足特定条件的所有元素。现在，我们要讲一个字符串流转换到另一个只包含长单词的流：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; wordsList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">Stream&lt;String&gt; words = wordsList.stream();</span><br><span class="line">Stream&lt;String&gt; longWords = words.filter(s -&gt; s.length() &gt; <span class="number">12</span>);</span><br></pre></td></tr></table></figure>
+
+<p><code>filter</code>的参数是一个<code>Predicate&lt;T&gt;</code>，这是一个从<code>T</code>到<code>boolean</code>的函数。<br>我们通常会想对一个流中的值进行某种形式的转换。可以使用<code>map</code>方法，传递给它一个执行转换的函数。例如，你可以用下面的代码把所以的单词转换为小写形式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;String&gt; lowcaseWords = words.map(String::toLowerCase);</span><br></pre></td></tr></table></figure>
+
+<p>这里我们使用的是一个方法引用。但通常,我们会使用一个lambda表达式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;Character&gt; firstChars = words.map(s -&gt; s.charAt(<span class="number">0</span>));</span><br></pre></td></tr></table></figure>
+
+<p>当你使用<code>map</code>的时候，会对每一个元素应用函数，并将返回值收集到一个新的流中。现在假设返回的不是一个值，而是包含多个值的流，如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Stream&lt;Character&gt; <span class="title function_">characterStream</span><span class="params">(String s)</span>&#123;</span><br><span class="line">    List&lt;Character&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">char</span> c : s.toCharArray()) &#123;</span><br><span class="line">        result.add(c);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result.stream();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>例如，<code>characterStream(&quot;boat&quot;)</code>返回的是流<code>stream[&#39;b&#39;,&#39;o&#39;,&#39;a&#39;,&#39;t&#39;]</code>。假设你这个方法映射到字符串流上：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;Stream&lt;Character&gt;&gt; result = words.map(TransformMethod::characterStream);</span><br></pre></td></tr></table></figure>
+
+<p>你会得到一个元素是流的流。要将它展开为一个只包含字符的流，你需要使用<code>flatMap</code>方法而不是<code>map</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;Character&gt; characterStream = words.flatMap(TransformMethod::characterStream);</span><br></pre></td></tr></table></figure>
+
+<h2 id="抽取子流和组合流"><a href="#抽取子流和组合流" class="headerlink" title="抽取子流和组合流"></a>抽取子流和组合流</h2><p>调用<code>Stream</code>的<code>limit(n)</code>方法，返回含有n个元素的新的流(或者返回原来的流如果原来流的大小比n小)。这个方法对于把无限的流切成一定大小是很有用的。比如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;Double&gt; randoms = Stream.generate(Math::random).limit(<span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+
+<p>Stream的<code>skip(n)</code>方法正好相反，它会丢弃前n个元素。在我们之前的读书的例子中，由于<code>split</code>方法的作用方式，产生的第一个元素是一个空字符串(其实我没觉得第一个元素会是空格…)，我们可以使用<code>skip</code>方法来略过这个元素：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;String&gt; words = Stream.of(<span class="string">&quot;Hello World&quot;</span>.split(<span class="string">&quot;[\\P&#123;L&#125;]+&quot;</span>)).skip(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p>你可以用<code>Stream</code>类的静态方法<code>concat</code>把两个流连接起来：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;Character&gt; combined = Stream.concat(characterStream(<span class="string">&quot;Hello&quot;</span>), characterStream(<span class="string">&quot;World&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>当然，<strong>第一个流的长度不能是无限的</strong>,否则第二个流就永远没有机会被使用。<br>还有一个<code>peek</code>方法，生成的流中的元素和原来的流完全一样，但是<strong>每次在其中取一个元素都会调用一个函数</strong>，这个方法对于debug是很方便。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object[] powers = Stream.iterate(<span class="number">1</span>, integer -&gt; integer * <span class="number">2</span>).peek(e -&gt; System.out.println(<span class="string">&quot;Fetching:&quot;</span> + e)).limit(<span class="number">20</span>).toArray();</span><br></pre></td></tr></table></figure>
+
+<p>当某个元素真正被访问了，才会打印出来一个消息。这样的方法可以验证对流的处理是lazy的。</p>
+<h2 id="有状态的转换"><a href="#有状态的转换" class="headerlink" title="有状态的转换"></a>有状态的转换</h2><p>之前说的那些转换方法都是无状态的，当你从一个已过滤的或已映射过的流中获取一个元素的时候，它的结果并不依赖于之前获取的元素。除此之前，也有一些有状态的转换方法。例如<code>distinct</code>方法，它根据原来的流中的元素返回一个具有相同属性，剔除了重复的元素的流。这个流显然是必须记住已经读取的元素的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;String&gt; uniqueWords = Stream.of(<span class="string">&quot;merrily&quot;</span>, <span class="string">&quot;merrily&quot;</span>, <span class="string">&quot;merrily&quot;</span>, <span class="string">&quot;gently&quot;</span>).distinct();</span><br></pre></td></tr></table></figure>
+
+<p><code>sorted</code>方法必须遍历整个流，并在产生任何元素之前就对其进行排序，毕竟，最小的元素可以位于最后。显然，你不能对一个无限的流进行排序：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;String&gt; longestFirst=words.sorted(Comparator.comparingInt(String::length).reversed());</span><br></pre></td></tr></table></figure>
+
+<p>当然，你不需要使用流也可以对集合进行排序，<strong>当排序只是多个流操作之一时，<code>sorted</code>方法是很有用的</strong>。<br>注意，<code>Collection.sort</code>是在原来的集合中进行排序，而<code>sorted</code>方法会返回一个已经排好序的新的流。</p>
+<h2 id="简单的聚合方法"><a href="#简单的聚合方法" class="headerlink" title="简单的聚合方法"></a>简单的聚合方法</h2><p>我们已经了解了如何创建和转换流，现在介绍最重要的一点：如何从流获取答案。这一节中涉及的方法统称为聚合方法。它们把流聚合成一个值以便使用。聚合方法是终结操作。<br>之前我们已经看到过一个简单的聚合方法<code>count</code>，他返回流的元素数量。其他的一些简单的聚合方法有<code>min</code>和<code>max</code>，但需要注意的是，<strong>它们返回的是一个<code>Optional&lt;T&gt;</code><strong>，它可能会封装了返回值，也可能表示没有返回值(如果流是空的)。在Java8之前，这种情况通常会返回null，但这可能会导致空指针异常。</strong>Java8中，<code>Optional</code>类型是一种更好的表明没有返回值的方式</strong>。下一章中会详细讨论<code>Optional</code>类型。下面的例子演示了如何从流中获取最大值：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;String&gt; largest = sortedWords.max(String::compareToIgnoreCase);</span><br></pre></td></tr></table></figure>
+
+<p><code>finFirst</code>方法返回集合中的第一个值，返回的也是<code>Optional&lt;T&gt;</code>。<strong>它通常和<code>filter</code>方法结合使用</strong>。比如，返回第一个以Q开头的单词：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;String&gt; startWithQ = words.filter(s -&gt; s.startsWith(<span class="string">&quot;Q&quot;</span>)).findFirst();</span><br></pre></td></tr></table></figure>
+
+<p>如果你不在乎是否是第一个，只想要任意的匹配项，可以使用<code>findAny</code>，<strong>它在你并行地处理流的时候非常高效</strong>，因为在任意片段中找到了第一个匹配项就会结束整个计算了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;String&gt; startWithQ = words.parallel().filter(s -&gt; s.startsWith(<span class="string">&quot;Q&quot;</span>)).findAny();</span><br></pre></td></tr></table></figure>
+
+<p>如果你只想知道流中是否有匹配的元素，使用<code>anyMatch</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="variable">aWordStartsWithQ</span> <span class="operator">=</span> words.parallel().anyMatch(s -&gt; s.startsWith(<span class="string">&quot;Q&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>还有两个方法<code>allMatch</code>和<code>noneMatch</code>，它们分别在所有元素或没有元素匹配的时候返回true。<strong>虽然它们都会检查整个流，但你还是可以并行执行来提高效率。</strong></p>
+<h2 id="Optional类型"><a href="#Optional类型" class="headerlink" title="Optional类型"></a>Optional类型</h2><p>一个<code>Optional&lt;T&gt;</code>对象是一个T类型对象的封装，或者表示没有任何对象。Java8引入它是想把它作为一个相比T类型引用更安全的选择。但是，<strong>你只有正确的使用它，它才是更安全的</strong>。<br>它的<code>get</code>方法会返回封装的元素如果存在的话，否则会抛出异常<code>NoSuchElementException</code>。因此，代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;T&gt; optionalValue = ...; </span><br><span class="line">optionalValue.get().someMethod()</span><br></pre></td></tr></table></figure>
+
+<p>并不比下面的代码更安全：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">T</span> <span class="variable">value</span> <span class="operator">=</span> ...; </span><br><span class="line">value.someMethod();</span><br></pre></td></tr></table></figure>
+
+<p>在前面的章节中，我们看到<code>isPresent</code>方法会反映<code>Optional&lt;T&gt;</code>对象中是否有值，但是，代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (optionalValue.isPresent()) optionalValue.get().someMethod();</span><br></pre></td></tr></table></figure>
+
+<p>并不比下面的代码更简洁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (value != <span class="literal">null</span>) value.someMethod();</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用Optional值"><a href="#使用Optional值" class="headerlink" title="使用Optional值"></a>使用Optional值</h3><p><strong>高效的使用Optional的关键是，使用一个或者接收正确的值或者产生替代值的方法。</strong><br>方法<code>ifPresent</code>接收一个函数，如果存在可选值，那么它会被传递给函数，如果没有，什么都不会发生。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">optionalValue.ifPresent(System.out::println);</span><br></pre></td></tr></table></figure>
+
+<p><code>ifPresent</code>不会返回值，<strong>如果你希望对结果进行处理，用<code>map</code>方法</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;Boolean&gt; added = optionalValue.map(results::add);</span><br></pre></td></tr></table></figure>
+
+<p><code>added</code>可能有三种值：封装着true或false的<code>Optional</code>对象如果<code>optionalValue</code>中有值的话，否则的话是一个空的<code>Optional</code>对象。<br>这个<code>map</code>方法和流的<code>map</code>方法是类似的，你可以把<code>Optional</code>看成是一个大小是0或1的流,返回的流的大小也是0或1，后一种情况会应用<code>map</code>接收的函数。<br>我们已经知道当一个可选值存在时应该如何优雅的对它进行处理。另一个使用可选值的策略是当没有值存在时产生一个替代值。通常，当没有匹配项时，你会想要使用一个默认值，例如空字符串。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">result</span> <span class="operator">=</span> optionalString.orElse(<span class="string">&quot;&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>你也可以调用函数来计算默认值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String result=optionalString.orElseGet(() -&gt; System.getProperty(<span class="string">&quot;user.dir&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>或者，你想在没有值的时候抛出其他的异常</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">error</span> <span class="operator">=</span> optionalString.orElseThrow(NoSuchElementException::<span class="keyword">new</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="生成Optional值"><a href="#生成Optional值" class="headerlink" title="生成Optional值"></a>生成Optional值</h3><p>如果你想编写一个产生<code>Optional</code>对象的方法，有一些静态方法可以选择。例如，<code>Optional.of</code>和<code>Optional.empty</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Optional&lt;Double&gt; <span class="title function_">inverse</span><span class="params">(Double x)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x==<span class="number">0</span>?Optional.empty():Optional.of(<span class="number">1</span>/x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>ofNullable</code>方法计划作为null值和可选值之间的桥梁。<code>Optional.ofNullable(obj)</code>在obj不是null的时候返回<code>Optional.of(obj)</code>，否则返回<code>Optional.empty()</code>。</p>
+<h3 id="使用flatMap组合可选值的函数"><a href="#使用flatMap组合可选值的函数" class="headerlink" title="使用flatMap组合可选值的函数"></a>使用flatMap组合可选值的函数</h3><p>假设你一个方法<code>f</code>可以生成<code>Optional&lt;T&gt;</code>，T类型又有一个方法<code>g</code>可以生成<code>Optional&lt;U&gt;</code>。如果它们是一般的方法，你可以用<code>s.f().g()</code>把它们组合起来。但是，这样的组合在这里行不通，因为<code>s.f()</code>的类型是<code>Optional&lt;T&gt;</code>,而不是T。但你可以这样写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;U&gt; = s.f().flatMap(T::g);</span><br></pre></td></tr></table></figure>
+
+<p>如果<code>s.f()</code>存在值，那么会继续调用<code>g</code>，否则，会返回一个空的<code>Optional&lt;U&gt;</code>。<br>显然，如果你有更多的返回<code>Optional</code>值的方法或lambda表达式，你可以重复这个步骤，通过不断调用<code>flatMap</code>，创建一个调用的流水线，只有当其中的每部分都成功时，整个处理才算是成功了。<br>以上面的安全的求倒数的方法为例，我们再写一个安全的求平方根的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Optional&lt;Double&gt; <span class="title function_">squre</span><span class="params">(Double x)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x==<span class="number">0</span>?Optional.empty():Optional.of(Math.sqrt(x));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>那么你可以这样计算倒数的平方根：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;Double&gt; result = inverse(<span class="number">4.0</span>).flatMap(OptionalType::squre);</span><br></pre></td></tr></table></figure>
+
+<p>或者这样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;Double&gt; result = Optional.of(<span class="number">4.0</span>).flatMap(OptionalType::inverse).flatMap(OptionalType::inverse);</span><br></pre></td></tr></table></figure>
+
+<p>不管是<code>inverse</code>还是<code>square</code>方法返回<code>Optional.empty()</code>，结果都为空。<br><strong>和<code>map</code>一样，其实<code>flatMap</code>和流的<code>flatMap</code>的方法很类似，如果你把<code>Optional</code>看做一个大小是0或1的流。</strong></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java-Java8/" rel="tag"># Java Java8</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/08/05/2017-8-5-Haskell%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="prev" title="Haskell开发环境搭建">
+      <i class="fa fa-chevron-left"></i> Haskell开发环境搭建
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/09/03/2017-9-3-%E5%BF%AB%E5%AD%A6Java8-%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%8B/" rel="next" title="快学Java8 第二章下">
+      快学Java8 第二章下 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E8%BF%AD%E4%BB%A3%E5%88%B0Stream%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">从迭代到Stream操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAStream"><span class="nav-number">2.</span> <span class="nav-text">创建Stream</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#filter-map%E5%92%8CflatMap%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">filter,map和flatMap方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%BD%E5%8F%96%E5%AD%90%E6%B5%81%E5%92%8C%E7%BB%84%E5%90%88%E6%B5%81"><span class="nav-number">4.</span> <span class="nav-text">抽取子流和组合流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E7%8A%B6%E6%80%81%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="nav-number">5.</span> <span class="nav-text">有状态的转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E8%81%9A%E5%90%88%E6%96%B9%E6%B3%95"><span class="nav-number">6.</span> <span class="nav-text">简单的聚合方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Optional%E7%B1%BB%E5%9E%8B"><span class="nav-number">7.</span> <span class="nav-text">Optional类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Optional%E5%80%BC"><span class="nav-number">7.1.</span> <span class="nav-text">使用Optional值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90Optional%E5%80%BC"><span class="nav-number">7.2.</span> <span class="nav-text">生成Optional值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8flatMap%E7%BB%84%E5%90%88%E5%8F%AF%E9%80%89%E5%80%BC%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">7.3.</span> <span class="nav-text">使用flatMap组合可选值的函数</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">JunJie Zi</p>
+  <div class="site-description" itemprop="description">Java,Clojure,Scala...</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zjjfly" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zjjfly" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zjjblue@gmail.com" title="E-Mail → mailto:zjjblue@gmail.com" rel="noopener" target="_blank"><i class="fab fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JunJie Zi</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
