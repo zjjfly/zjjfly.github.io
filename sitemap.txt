@@ -13,6 +13,6 @@ https://zjjfly.github.io/tags/Java-Java8/
 https://zjjfly.github.io/tags/rsync/
 https://zjjfly.github.io/tags/Java-JMH/
 https://zjjfly.github.io/tags/Java-Java7-Java8/
-https://zjjfly.github.io/tags/Java-Java12-Java13-Java14-Java15-Java16-Java17/
 https://zjjfly.github.io/tags/Java-Java9-Java10-Java11/
+https://zjjfly.github.io/tags/Java-Java12-Java13-Java14-Java15-Java16-Java17/
 https://zjjfly.github.io/tags/Python-Tricks/
