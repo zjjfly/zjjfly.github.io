@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"zjjfly.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":250,"display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="本人有一段时间就职于某市的公积金项目，项目每次上线新的功能，都要复制代码到多个服务器上，手动复制显得很繁琐，可靠性也无法保障。所以曾探索使用rsync进行自动复制，但由于种种原因最终未能投入生产环境，在此把一些经验和大家分享。下面的内容需要在已安装rsync的机器上运行，安装方法可以自行搜索。 1.启动先查看一下rsync是否已经启动，运行命令ps -ef|grep rsync，下图就是已经启动了">
+  <meta name="description" content="本人有一段时间就职于某市的公积金项目，项目每次上线新的功能，都要复制代码到多个服务器上，手动复制显得很繁琐，可靠性也无法保障。所以曾探索使用rsync进行自动复制，但由于种种原因最终未能投入生产环境，在此把一些经验和大家分享。下面的内容需要在已安装rsync的机器上运行，安装方法可以自行搜索。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="rsync使用心得">
 <meta property="og:url" content="https://zjjfly.github.io/2017/07/28/2017-7-28-rsync%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/index.html">
 <meta property="og:site_name" content="zjjfly&#39;s blog">
-<meta property="og:description" content="本人有一段时间就职于某市的公积金项目，项目每次上线新的功能，都要复制代码到多个服务器上，手动复制显得很繁琐，可靠性也无法保障。所以曾探索使用rsync进行自动复制，但由于种种原因最终未能投入生产环境，在此把一些经验和大家分享。下面的内容需要在已安装rsync的机器上运行，安装方法可以自行搜索。 1.启动先查看一下rsync是否已经启动，运行命令ps -ef|grep rsync，下图就是已经启动了">
+<meta property="og:description" content="本人有一段时间就职于某市的公积金项目，项目每次上线新的功能，都要复制代码到多个服务器上，手动复制显得很繁琐，可靠性也无法保障。所以曾探索使用rsync进行自动复制，但由于种种原因最终未能投入生产环境，在此把一些经验和大家分享。下面的内容需要在已安装rsync的机器上运行，安装方法可以自行搜索。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2017-07-28T01:32:28.000Z">
-<meta property="article:modified_time" content="2023-05-03T01:48:27.755Z">
+<meta property="article:modified_time" content="2023-05-03T02:14:45.427Z">
 <meta property="article:author" content="JunJie Zi">
 <meta property="article:tag" content="rsync">
 <meta name="twitter:card" content="summary">
@@ -101,6 +101,7 @@
       <h1 class="site-title">zjjfly's blog</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
+      <p class="site-subtitle" itemprop="description">Java,Clojure,Scala...</p>
   </div>
 
   <div class="site-nav-right">
@@ -157,7 +158,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="JunJie Zi">
-      <meta itemprop="description" content="Java,Clojure,Scala...">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -182,7 +183,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-05-03 09:48:27" itemprop="dateModified" datetime="2023-05-03T09:48:27+08:00">2023-05-03</time>
+                <time title="Modified: 2023-05-03 10:14:45" itemprop="dateModified" datetime="2023-05-03T10:14:45+08:00">2023-05-03</time>
               </span>
 
           
@@ -197,6 +198,7 @@
 
       
         <p>本人有一段时间就职于某市的公积金项目，项目每次上线新的功能，都要复制代码到多个服务器上，手动复制显得很繁琐，可靠性也无法保障。所以曾探索使用rsync进行自动复制，但由于种种原因最终未能投入生产环境，在此把一些经验和大家分享。<br>下面的内容需要在已安装rsync的机器上运行，安装方法可以自行搜索。</p>
+<span id="more"></span>
 <h2 id="1-启动"><a href="#1-启动" class="headerlink" title="1.启动"></a>1.启动</h2><p>先查看一下rsync是否已经启动，运行命令ps -ef|grep rsync，下图就是已经启动了的。<br>![rsync.png](&#x2F;images&#x2F;20170728&#x2F;rsync.png)<br>如没有启动，运行命令&#x2F;usr&#x2F;bin&#x2F;rsync –daemon，再次运行上面那个命令看是否启动成功。</p>
 <h2 id="2-配置"><a href="#2-配置" class="headerlink" title="2.配置"></a>2.配置</h2><hr>
 <h3 id="2-1服务器端配置"><a href="#2-1服务器端配置" class="headerlink" title="2.1服务器端配置"></a>2.1服务器端配置</h3><p>首先进入&#x2F;etc目录，创建一个文件rsyncd.conf,内容可以像下面这样(每一行的第一个数字是行号)：</p>
@@ -318,19 +320,19 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name">JunJie Zi</p>
-  <div class="site-description" itemprop="description">Java,Clojure,Scala...</div>
+  <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
