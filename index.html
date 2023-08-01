@@ -147,6 +147,82 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="https://zjjfly.github.io/2023/08/01/2023-8-1-Mockito-inline%E6%95%99%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="JunJie Zi">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zjjfly's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/01/2023-8-1-Mockito-inline%E6%95%99%E7%A8%8B/" class="post-title-link" itemprop="url">Untitled</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-08-01 21:08:12" itemprop="dateCreated datePublished" datetime="2023-08-01T21:08:12+08:00">2023-08-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><code>Mockito-inline</code> 是 <code>Mockito</code> 的一个分支，它提供了一种新的方法来模拟方法调用，称为内联模拟。内联模拟可以让你在调用方法时直接指定返回值，而不是在调用完方法后再设置返回值。这种方式的优点在于可以简化代码，并且更容易阅读和维护。相比于<code>PowerMock</code>，它对代码的侵入性更小（<code>PowerMock</code>的原理是改写类的字节码），而且有更好的社区支持（<code>PowerMock</code>已经两年多没有发布新版本）。所以，使用<code>Mockito-inline</code>替代<code>PowerMock</code>应该是未来的趋势。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>在<code>pom.xml</code>中加入下面的依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mockito<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mockito-inline<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果已存在<code>mockito-core</code>的依赖，则需要用这个依赖替换它。</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>本教程对应的待测试类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StringUtil</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">randomStr</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">RandomGenerator</span> <span class="variable">random</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>(<span class="number">1</span>);</span><br><span class="line">        <span class="type">char</span>[] chars = <span class="keyword">new</span> <span class="title class_">char</span>[<span class="number">8</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">8</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((i % <span class="number">2</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">                chars[i] = ((<span class="type">char</span>) (<span class="number">97</span> + random.nextInt(<span class="number">26</span>)));</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                chars[i] = ((<span class="type">char</span>) (<span class="number">48</span> + random.nextInt(<span class="number">10</span>)));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">String</span>(chars);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">empty</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> StrUtil.EMPTY;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">printLine</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">printWithLine</span><span class="params">(String s)</span> &#123;</span><br><span class="line">        System.out.println(s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">trim</span><span class="params">(String s)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> StrUtil.trim(s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="mock构造函数"><a href="#mock构造函数" class="headerlink" title="mock构造函数"></a>mock构造函数</h3><p><code>StringUtil.randomStr</code>中有一个使用<code>Random</code>的构造函数来初始化了一个<code>RandomGenerator</code>，在测试类需要对其进行mock。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">randomStr</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> (MockedConstruction&lt;Random&gt; mockedConstruction =</span><br><span class="line">        Mockito.mockConstruction(Random.class, (random, context) -&gt; &#123;</span><br><span class="line">            Mockito.when(random.nextInt(ArgumentMatchers.anyInt())).thenReturn(<span class="number">1</span>);</span><br><span class="line">        &#125;)</span><br><span class="line">    ) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">randomStr</span> <span class="operator">=</span> StringUtil.randomStr();</span><br><span class="line">        Assertions.assertEquals(<span class="string">&quot;b1b1b1b1&quot;</span>, randomStr);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中，对构造函数的mock只在<code>try</code>中有效。<code>(random, context) -&gt; &#123;...&#125;</code>的第一个参数就是mock的构造函数返回的对象，可以在其函数体中进行进一步mock。</p>
+<h3 id="mock无参数的静态方法"><a href="#mock无参数的静态方法" class="headerlink" title="mock无参数的静态方法"></a>mock无参数的静态方法</h3><p><code>StringUtil.empty</code>和<code>StringUtil.printLine</code>是无参数的静态方法，使用<code>Mockito-inline</code>测试这两个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">empty</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> (MockedStatic&lt;StringUtil&gt; mocked = Mockito.mockStatic(StringUtil.class)) &#123;</span><br><span class="line">        mocked.when(StringUtil::empty).thenReturn(<span class="string">&quot;xyz&quot;</span>);</span><br><span class="line">        Assertions.assertEquals(<span class="string">&quot;xyz&quot;</span>, StringUtil.empty());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">printLine</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="keyword">try</span> (MockedStatic&lt;StringUtil&gt; mocked = Mockito.mockStatic(StringUtil.class)) &#123;</span><br><span class="line">        <span class="comment">//printLine没有返回值，所以需要使用thenAnswer进行mock</span></span><br><span class="line">        mocked.when(StringUtil::printLine).thenAnswer((invocation) -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;test&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="type">String</span> <span class="variable">text</span> <span class="operator">=</span> SystemLambda.tapSystemOut(StringUtil::printLine);</span><br><span class="line">        Assertions.assertEquals(<span class="string">&quot;test&quot;</span>+System.lineSeparator(),text);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="mock带参数的静态方法"><a href="#mock带参数的静态方法" class="headerlink" title="mock带参数的静态方法"></a>mock带参数的静态方法</h3><p><code>StringUtil.trim</code>和<code>StringUtil.printWithLine</code>是带参数的静态方法，使用<code>Mockito-inline</code>测试这两个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">trim</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> (MockedStatic&lt;StringUtil&gt; mocked = Mockito.mockStatic(StringUtil.class)) &#123;</span><br><span class="line">        <span class="comment">//mock有参数的方法，需要把要mock的方法调用放在lambda中</span></span><br><span class="line">        mocked.when(() -&gt; StringUtil.trim(ArgumentMatchers.anyString())).thenReturn(<span class="string">&quot;abc&quot;</span>);</span><br><span class="line">        Assertions.assertEquals(<span class="string">&quot;abc&quot;</span>, StringUtil.trim(<span class="string">&quot; xyz &quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">printWithLine</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="keyword">try</span> (MockedStatic&lt;StringUtil&gt; mocked = Mockito.mockStatic(StringUtil.class)) &#123;</span><br><span class="line">        <span class="comment">//printWithLine没有返回值，所以需要使用thenAnswer进行mock</span></span><br><span class="line">        mocked.when(() -&gt; StringUtil.printWithLine(ArgumentMatchers.anyString()))</span><br><span class="line">            .thenAnswer((invocation) -&gt; &#123;</span><br><span class="line">                System.out.println();</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">            &#125;);</span><br><span class="line">        <span class="type">String</span> <span class="variable">text</span> <span class="operator">=</span> SystemLambda.tapSystemOut(()-&gt;StringUtil.printWithLine(<span class="string">&quot;abc&quot;</span>));</span><br><span class="line">        Assertions.assertEquals(System.lineSeparator(), text);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="mockito-inline存在的问题"><a href="#mockito-inline存在的问题" class="headerlink" title="mockito-inline存在的问题"></a>mockito-inline存在的问题</h3><h4 id="有些类不能mock"><a href="#有些类不能mock" class="headerlink" title="有些类不能mock"></a>有些类不能mock</h4><p>如<code>java.io.File</code>这个类，mockito-inline就不能对其构造函数和一些方法（实例方法，如<code>exists()</code>）进行mock，否则会报<code>java.lang.StackOverflowError</code>的错误。开发者对这个问题的<a target="_blank" rel="noopener" href="https://github.com/mockito/mockito/issues/2342#issuecomment-960233554">解释</a>。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
     <link itemprop="mainEntityOfPage" href="https://zjjfly.github.io/2022/06/21/2022-6-21-%E5%AD%A6%E4%B9%A0Java12-17/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -178,7 +254,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-08-01 21:06:25" itemprop="dateModified" datetime="2023-08-01T21:06:25+08:00">2023-08-01</time>
+                <time title="Modified: 2023-08-01 21:08:12" itemprop="dateModified" datetime="2023-08-01T21:08:12+08:00">2023-08-01</time>
               </span>
 
           
@@ -258,7 +334,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-08-01 21:06:25" itemprop="dateModified" datetime="2023-08-01T21:06:25+08:00">2023-08-01</time>
+                <time title="Modified: 2023-08-01 21:08:12" itemprop="dateModified" datetime="2023-08-01T21:08:12+08:00">2023-08-01</time>
               </span>
 
           
@@ -331,7 +407,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-08-01 21:06:25" itemprop="dateModified" datetime="2023-08-01T21:06:25+08:00">2023-08-01</time>
+                <time title="Modified: 2023-08-01 21:08:12" itemprop="dateModified" datetime="2023-08-01T21:08:12+08:00">2023-08-01</time>
               </span>
 
           
@@ -408,7 +484,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-08-01 21:06:25" itemprop="dateModified" datetime="2023-08-01T21:06:25+08:00">2023-08-01</time>
+                <time title="Modified: 2023-08-01 21:08:12" itemprop="dateModified" datetime="2023-08-01T21:08:12+08:00">2023-08-01</time>
               </span>
 
           
@@ -481,7 +557,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-08-01 21:06:25" itemprop="dateModified" datetime="2023-08-01T21:06:25+08:00">2023-08-01</time>
+                <time title="Modified: 2023-08-01 21:08:12" itemprop="dateModified" datetime="2023-08-01T21:08:12+08:00">2023-08-01</time>
               </span>
 
           
@@ -559,7 +635,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-08-01 21:06:25" itemprop="dateModified" datetime="2023-08-01T21:06:25+08:00">2023-08-01</time>
+                <time title="Modified: 2023-08-01 21:08:12" itemprop="dateModified" datetime="2023-08-01T21:08:12+08:00">2023-08-01</time>
               </span>
 
           
@@ -631,7 +707,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-08-01 21:06:25" itemprop="dateModified" datetime="2023-08-01T21:06:25+08:00">2023-08-01</time>
+                <time title="Modified: 2023-08-01 21:08:12" itemprop="dateModified" datetime="2023-08-01T21:08:12+08:00">2023-08-01</time>
               </span>
 
           
@@ -709,7 +785,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-08-01 21:06:25" itemprop="dateModified" datetime="2023-08-01T21:06:25+08:00">2023-08-01</time>
+                <time title="Modified: 2023-08-01 21:08:12" itemprop="dateModified" datetime="2023-08-01T21:08:12+08:00">2023-08-01</time>
               </span>
 
           
@@ -784,7 +860,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-08-01 21:06:25" itemprop="dateModified" datetime="2023-08-01T21:06:25+08:00">2023-08-01</time>
+                <time title="Modified: 2023-08-01 21:08:12" itemprop="dateModified" datetime="2023-08-01T21:08:12+08:00">2023-08-01</time>
               </span>
 
           
@@ -822,80 +898,11 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
-    <link itemprop="mainEntityOfPage" href="https://zjjfly.github.io/2017/07/28/2017-7-28-rsync%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="JunJie Zi">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zjjfly's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/28/2017-7-28-rsync%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/" class="post-title-link" itemprop="url">rsync使用心得</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-07-28 09:32:28" itemprop="dateCreated datePublished" datetime="2017-07-28T09:32:28+08:00">2017-07-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-08-01 21:06:25" itemprop="dateModified" datetime="2023-08-01T21:06:25+08:00">2023-08-01</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本人有一段时间就职于某市的公积金项目，项目每次上线新的功能，都要复制代码到多个服务器上，手动复制显得很繁琐，可靠性也无法保障。所以曾探索使用rsync进行自动复制，但由于种种原因最终未能投入生产环境，在此把一些经验和大家分享。<br>下面的内容需要在已安装rsync的机器上运行，安装方法可以自行搜索。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/28/2017-7-28-rsync%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
 
 
 
@@ -960,7 +967,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
