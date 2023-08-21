@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://zjjfly.github.io/2023/08/21/2023-8-21-%E4%BB%8EJava-8%E8%BF%81%E7%A7%BB%E8%87%B3Java-17/</loc>
+    
+    <lastmod>2023-08-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://zjjfly.github.io/2017/10/10/%E5%BF%AB%E5%AD%A6Java8%20%E7%AC%AC%E4%B8%89%E7%AB%A0/</loc>
     
     <lastmod>2023-08-21</lastmod>
@@ -100,15 +109,6 @@
     <priority>0.6</priority>
   </url>
   
-  <url>
-    <loc>https://zjjfly.github.io/2023/08/21/2023-8-21-%E4%BB%8EJava-8%E8%BF%81%E7%A7%BB%E8%87%B3Java-17/</loc>
-    
-    <lastmod>2023-08-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
 
   <url>
     <loc>https://zjjfly.github.io/</loc>
@@ -119,7 +119,14 @@
 
   
   <url>
-    <loc>https://zjjfly.github.io/tags/Java-Java8/</loc>
+    <loc>https://zjjfly.github.io/tags/Java/</loc>
+    <lastmod>2023-08-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zjjfly.github.io/tags/Java-8/</loc>
     <lastmod>2023-08-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -133,42 +140,98 @@
   </url>
   
   <url>
-    <loc>https://zjjfly.github.io/tags/Java-JMH/</loc>
+    <loc>https://zjjfly.github.io/tags/JMH/</loc>
     <lastmod>2023-08-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://zjjfly.github.io/tags/Java-Java7-Java8/</loc>
+    <loc>https://zjjfly.github.io/tags/Java-7/</loc>
     <lastmod>2023-08-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://zjjfly.github.io/tags/Java-Java9-Java10-Java11/</loc>
+    <loc>https://zjjfly.github.io/tags/Java-9/</loc>
     <lastmod>2023-08-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://zjjfly.github.io/tags/Python-Tricks/</loc>
+    <loc>https://zjjfly.github.io/tags/Java-10/</loc>
     <lastmod>2023-08-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://zjjfly.github.io/tags/Java-Java12-Java13-Java14-Java15-Java16-Java17/</loc>
+    <loc>https://zjjfly.github.io/tags/Java-11/</loc>
     <lastmod>2023-08-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://zjjfly.github.io/tags/mockito-mockito-inline/</loc>
+    <loc>https://zjjfly.github.io/tags/Python-Python-Tricks/</loc>
+    <lastmod>2023-08-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zjjfly.github.io/tags/Java-12/</loc>
+    <lastmod>2023-08-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zjjfly.github.io/tags/Java-13/</loc>
+    <lastmod>2023-08-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zjjfly.github.io/tags/Java-14/</loc>
+    <lastmod>2023-08-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zjjfly.github.io/tags/Java-15/</loc>
+    <lastmod>2023-08-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zjjfly.github.io/tags/Java-16/</loc>
+    <lastmod>2023-08-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zjjfly.github.io/tags/Java17/</loc>
+    <lastmod>2023-08-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zjjfly.github.io/tags/mockito/</loc>
+    <lastmod>2023-08-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://zjjfly.github.io/tags/mockito-inline/</loc>
     <lastmod>2023-08-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
