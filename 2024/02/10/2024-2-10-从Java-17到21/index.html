@@ -27,8 +27,9 @@
 <meta property="og:site_name" content="zjjfly&#39;s blog">
 <meta property="og:description" content="从Java18到21随着Java最新版本21的推出，其中的新特性之一：虚拟线程，受到广泛关注。笔者觉得有必要对从Java18到21的所有主要的新特性做一个盘点，就像之前的《学习Java9~11》和《学习Java12~17》。 虚拟线程毫无疑问，虚拟线程是所有的新特性中最重要的一个。在此之前，Java中的线程实际是对操作系统的线程的包装，而操作系统的线程的创建代价比较高昂，如果你在线程中发送HTTP">
 <meta property="og:locale">
+<meta property="og:image" content="https://zjjfly.github.io/images/20240210/sequencedcollections.png">
 <meta property="article:published_time" content="2024-02-10T14:35:00.000Z">
-<meta property="article:modified_time" content="2024-02-10T14:42:00.894Z">
+<meta property="article:modified_time" content="2024-02-10T15:04:21.823Z">
 <meta property="article:author" content="JunJie Zi">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="Java 18">
@@ -36,6 +37,7 @@
 <meta property="article:tag" content="Java 20">
 <meta property="article:tag" content="Java 21">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zjjfly.github.io/images/20240210/sequencedcollections.png">
 
 <link rel="canonical" href="https://zjjfly.github.io/2024/02/10/2024-2-10-%E4%BB%8EJava-17%E5%88%B021/">
 
@@ -181,7 +183,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2024-02-10 22:35:00 / Modified: 22:42:00" itemprop="dateCreated datePublished" datetime="2024-02-10T22:35:00+08:00">2024-02-10</time>
+              <time title="Created: 2024-02-10 22:35:00 / Modified: 23:04:21" itemprop="dateCreated datePublished" datetime="2024-02-10T22:35:00+08:00">2024-02-10</time>
             </span>
 
           
@@ -197,6 +199,8 @@
       
         <h1 id="从Java18到21"><a href="#从Java18到21" class="headerlink" title="从Java18到21"></a>从Java18到21</h1><p>随着Java最新版本21的推出，其中的新特性之一：虚拟线程，受到广泛关注。笔者觉得有必要对从Java18到21的所有主要的新特性做一个盘点，就像之前的<a href="https://zjjfly.github.io/2019/05/29/2019-5-29-%E5%AD%A6%E4%B9%A0Java9-11/">《学习Java9~11》</a>和<a href="https://zjjfly.github.io/2022/06/21/2022-6-21-%E5%AD%A6%E4%B9%A0Java12-17/">《学习Java12~17》</a>。</p>
 <h2 id="虚拟线程"><a href="#虚拟线程" class="headerlink" title="虚拟线程"></a>虚拟线程</h2><p>毫无疑问，虚拟线程是所有的新特性中最重要的一个。在此之前，Java中的线程实际是对操作系统的线程的包装，而操作系统的线程的创建代价比较高昂，如果你在线程中发送HTTP请求到另一个服务器，其中发送请求和处理响应只占线程阻塞的时间的一小部分，大部分时间是在等待响应。避免这种情况的一个方式是使用异步方式，但这种方式的缺点是实现较复杂。而有了虚拟线程，你能够在不改变实现的情况下获得和异步一样的伸缩性。</p>
+<span id="more"></span>
+
 <p>创建虚拟线程的方式：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Thread.startVirtualThread(() -&gt; System.out.println(<span class="string">&quot;foo&quot;</span>));</span><br></pre></td></tr></table></figure>
 
@@ -207,7 +211,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ExecutorService</span> <span class="variable">executor</span> <span class="operator">=</span> Executors.newVirtualThreadPerTaskExecutor()</span><br><span class="line">  </span><br><span class="line"><span class="type">ThreadFactory</span> <span class="variable">threadFactory</span> <span class="operator">=</span> Thread.ofVirtual().name(<span class="string">&quot;my-thread&quot;</span>, <span class="number">0</span>).factory();</span><br></pre></td></tr></table></figure>
 
 <h2 id="顺序集合"><a href="#顺序集合" class="headerlink" title="顺序集合"></a>顺序集合</h2><p>序列集合填补了Java中缺少的表示具有确定顺序的元素序列的集合类型。除此之外，没有一个统一的应用于这样的集合的操作集。社区对此抱怨已久，现在通过引入一些新的集合接口解决了这个问题。可以参考下面的图，其中的绿色接口就是新加入的：</p>
-<p>![img](&#x2F;images&#x2F;20240210&#x2F;sequencedcollections.png)</p>
+<p><img src="/images/20240210/sequencedcollections.png" alt="sequencedcollections"></p>
 <p>初次之外，<code>SequencedSet</code>,<code>SequencedCollection</code>和<code>SequencedMap</code>都有对应的不可变版本：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Collections.unmodifiableSequencedCollection(sequencedCollection)</span><br><span class="line">Collections.unmodifiableSequencedSet(sequencedSet)</span><br><span class="line">Collections.unmodifiableSequencedMap(sequencedMap)</span><br></pre></td></tr></table></figure>
 

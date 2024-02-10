@@ -27,11 +27,13 @@
 <meta property="og:site_name" content="zjjfly&#39;s blog">
 <meta property="og:description" content="本人有一段时间就职于某市的公积金项目，项目每次上线新的功能，都要复制代码到多个服务器上，手动复制显得很繁琐，可靠性也无法保障。所以曾探索使用rsync进行自动复制，但由于种种原因最终未能投入生产环境，在此把一些经验和大家分享。下面的内容需要在已安装rsync的机器上运行，安装方法可以自行搜索。">
 <meta property="og:locale">
+<meta property="og:image" content="https://zjjfly.github.io/images/20170728/rsync.png">
 <meta property="article:published_time" content="2017-07-28T01:32:28.000Z">
-<meta property="article:modified_time" content="2024-02-10T14:42:00.890Z">
+<meta property="article:modified_time" content="2024-02-10T15:04:21.823Z">
 <meta property="article:author" content="JunJie Zi">
 <meta property="article:tag" content="rsync">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zjjfly.github.io/images/20170728/rsync.png">
 
 <link rel="canonical" href="https://zjjfly.github.io/2017/07/28/2017-7-28-rsync%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97/">
 
@@ -183,7 +185,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-10 22:42:00" itemprop="dateModified" datetime="2024-02-10T22:42:00+08:00">2024-02-10</time>
+                <time title="Modified: 2024-02-10 23:04:21" itemprop="dateModified" datetime="2024-02-10T23:04:21+08:00">2024-02-10</time>
               </span>
 
           
@@ -199,7 +201,7 @@
       
         <p>本人有一段时间就职于某市的公积金项目，项目每次上线新的功能，都要复制代码到多个服务器上，手动复制显得很繁琐，可靠性也无法保障。所以曾探索使用rsync进行自动复制，但由于种种原因最终未能投入生产环境，在此把一些经验和大家分享。<br>下面的内容需要在已安装rsync的机器上运行，安装方法可以自行搜索。</p>
 <span id="more"></span>
-<h2 id="1-启动"><a href="#1-启动" class="headerlink" title="1.启动"></a>1.启动</h2><p>先查看一下rsync是否已经启动，运行命令ps -ef|grep rsync，下图就是已经启动了的。<br>![rsync.png](&#x2F;images&#x2F;20170728&#x2F;rsync.png)<br>如没有启动，运行命令&#x2F;usr&#x2F;bin&#x2F;rsync –daemon，再次运行上面那个命令看是否启动成功。</p>
+<h2 id="1-启动"><a href="#1-启动" class="headerlink" title="1.启动"></a>1.启动</h2><p>先查看一下rsync是否已经启动，运行命令ps -ef|grep rsync，下图就是已经启动了的。<br><img src="/images/20170728/rsync.png" alt="rsync.png"><br>如没有启动，运行命令&#x2F;usr&#x2F;bin&#x2F;rsync –daemon，再次运行上面那个命令看是否启动成功。</p>
 <h2 id="2-配置"><a href="#2-配置" class="headerlink" title="2.配置"></a>2.配置</h2><hr>
 <h3 id="2-1服务器端配置"><a href="#2-1服务器端配置" class="headerlink" title="2.1服务器端配置"></a>2.1服务器端配置</h3><p>首先进入&#x2F;etc目录，创建一个文件rsyncd.conf,内容可以像下面这样(每一行的第一个数字是行号)：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">1 pid file=/var/rsynclog/rsyncd.pid</span><br><span class="line">2 log file=/var/rsynclog/rsyncd.log</span><br><span class="line">3 lock file=/var/rsynclog/rsync.lock</span><br><span class="line">4 motd file=/etc/rsyncd.motd</span><br><span class="line">5 port=808</span><br><span class="line">6 address=192.168.1.1</span><br><span class="line">7 hosts allow=192.168.1.2</span><br><span class="line">8 hosts deny=0.0.0.0/0</span><br><span class="line">9 uid=weblogic</span><br><span class="line">10 gid=bea</span><br><span class="line">11 max connections=10</span><br><span class="line">12 [deploy]</span><br><span class="line">13 path=/tmp/test/testsync</span><br><span class="line">14 comment=test for use</span><br><span class="line">15 exclude=/WEB-INF/apps/loan/portal_config.xml /WEB- INF/apps/loan/view_config.xml</span><br><span class="line">16 ignore errors</span><br><span class="line">17 read only=yes</span><br><span class="line">18 hosts allow=192.168.1.2</span><br><span class="line">19 hosts deny=0.0.0.0/0</span><br><span class="line">20 list=yes</span><br><span class="line">21 auth users=weblogic</span><br><span class="line">22 secrets file=/etc/rsyncd.secrets</span><br></pre></td></tr></table></figure>

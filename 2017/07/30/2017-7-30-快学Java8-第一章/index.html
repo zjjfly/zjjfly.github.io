@@ -27,12 +27,15 @@
 <meta property="og:site_name" content="zjjfly&#39;s blog">
 <meta property="og:description" content="最近开始看&lt;&lt;写给大忙人看到Java SE 8&gt;&gt;,由于和我看过的《快学Scala》是一个系列的，所以姑且叫它《快学Java8》。这一篇是第一章的看书笔记，以后每个章节也都会有一篇笔记。 为什么要引入Lambda表达式Java引入的最重要的特性是lambda表达式。lambda表达式实际上是一段可以传递的代码。在Java8之前，由于Java的设计问题，要传递代码必须构造一个">
 <meta property="og:locale">
+<meta property="og:image" content="https://zjjfly.github.io/images/20170730/java8-1-1.png">
+<meta property="og:image" content="https://zjjfly.github.io/images/20170730/java8-1-2.png">
 <meta property="article:published_time" content="2017-07-30T01:32:28.000Z">
-<meta property="article:modified_time" content="2024-02-10T14:42:00.890Z">
+<meta property="article:modified_time" content="2024-02-10T15:04:21.823Z">
 <meta property="article:author" content="JunJie Zi">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="Java 8">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zjjfly.github.io/images/20170730/java8-1-1.png">
 
 <link rel="canonical" href="https://zjjfly.github.io/2017/07/30/2017-7-30-%E5%BF%AB%E5%AD%A6Java8-%E7%AC%AC%E4%B8%80%E7%AB%A0/">
 
@@ -184,7 +187,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-10 22:42:00" itemprop="dateModified" datetime="2024-02-10T22:42:00+08:00">2024-02-10</time>
+                <time title="Modified: 2024-02-10 23:04:21" itemprop="dateModified" datetime="2024-02-10T23:04:21+08:00">2024-02-10</time>
               </span>
 
           
@@ -276,13 +279,13 @@
 <li>参数</li>
 <li><strong>自由变量的值。自由变量是指那些既不是lambda表达式的参数也不是在lambda代码块中的定义的变量</strong></li>
 </ul>
-<p>上面代码中的<code>msg</code>和<code>count</code>就是自由变量。可以说，这两个值已经被lambda<strong>捕获</strong>了。这是一个技术上的细节，如果你将一个lambda转换成一个只含有一个方法的对象，那么自由变量的值就会被复制到该对象的实例变量中。<br><strong>我们称含有自由变量的代码块为闭包</strong>。实际上，<strong>内部类一直都是闭包</strong>。Java8为闭包赋予了更吸引人的语法。<br>为了确保被捕获的值是良好定义的，需要遵守一个重要的约束：在lambda表达式中，被引用的变量的值不可以被更改。所以，下面的代码是不合法的：![java8-1-1.png](&#x2F;images&#x2F;20170730&#x2F;java8-1-1.png)<br>做出这种约束的原因是，<strong>更改lambda表达式中的变量不是线程安全的</strong>。<br>内部类也会捕获闭合作用域中的值。Java8之前，内部类只允许访问final的局部变量，为了适应lambda表达式，这条规则在Java8被放宽，<strong>一个内部类可以访问任何有效的final局部变量，即任何不会发生变化的值，并不一定要以final修饰</strong>。<br>但不可变的约束只作用在局部变量上，<strong>如果是一个实例变量或某个闭合类的静态变量，那么不会有任何的错误提示</strong>。同样的，改变一个共享对象也是完全合法的，即使这样不是很恰当：</p>
+<p>上面代码中的<code>msg</code>和<code>count</code>就是自由变量。可以说，这两个值已经被lambda<strong>捕获</strong>了。这是一个技术上的细节，如果你将一个lambda转换成一个只含有一个方法的对象，那么自由变量的值就会被复制到该对象的实例变量中。<br><strong>我们称含有自由变量的代码块为闭包</strong>。实际上，<strong>内部类一直都是闭包</strong>。Java8为闭包赋予了更吸引人的语法。<br>为了确保被捕获的值是良好定义的，需要遵守一个重要的约束：在lambda表达式中，被引用的变量的值不可以被更改。所以，下面的代码是不合法的：<img src="/images/20170730/java8-1-1.png" alt="java8-1-1.png"><br>做出这种约束的原因是，<strong>更改lambda表达式中的变量不是线程安全的</strong>。<br>内部类也会捕获闭合作用域中的值。Java8之前，内部类只允许访问final的局部变量，为了适应lambda表达式，这条规则在Java8被放宽，<strong>一个内部类可以访问任何有效的final局部变量，即任何不会发生变化的值，并不一定要以final修饰</strong>。<br>但不可变的约束只作用在局部变量上，<strong>如果是一个实例变量或某个闭合类的静态变量，那么不会有任何的错误提示</strong>。同样的，改变一个共享对象也是完全合法的，即使这样不是很恰当：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; nums = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i%<span class="number">2</span>==<span class="number">0</span>) nums.add(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><code>nums</code>是有效final的，因为它在初始化后没有被赋予新的值。但是，它内部的元素是可以修改的，所以仍然不是线程安全的。后面会介绍一些线程安全的集合。<br>既然lambda中引用的外部变量是不能更改的，那么怎么实现一个计数器呢？这个问题在使用内部类的时候就已经存在，方法是使用一个的长度为1的数组：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> counter[]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">Runnable runnable=() -&gt; &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; count; i+</span><br><span class="line">        counter[<span class="number">0</span>]++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<p>lambda表达式中不允许声明一个与局部变量同名的参数或者局部变量：![java8-1-2.png](&#x2F;images&#x2F;20170730&#x2F;java8-1-2.png)<br><strong>当你在lambda表达式中使用this关键字时，你使用的是创建该lambda的方法的this参数</strong>。</p>
+<p>lambda表达式中不允许声明一个与局部变量同名的参数或者局部变量：<img src="/images/20170730/java8-1-2.png" alt="java8-1-2.png"><br><strong>当你在lambda表达式中使用this关键字时，你使用的是创建该lambda的方法的this参数</strong>。</p>
 <h2 id="默认方法"><a href="#默认方法" class="headerlink" title="默认方法"></a>默认方法</h2><p>很多语言都将函数表达式应用到了集合库中。Java8同样如此。但是，Java的集合库是很早就有的，如果要给<code>Collection</code>接口添加新的方法，如<code>forEach</code>,那么所有实现了<code>Collection</code>接口的类都必须实现这个方法，这令人无法接受也没有必要。Java的设计者通过允许接口带有具体实现的方法来一劳永逸的解决这个问题，这些方法就叫做默认方法。下面是一个例子：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Person</span>&#123;</span><br><span class="line">    <span class="type">long</span> <span class="title function_">getId</span><span class="params">()</span>;</span><br><span class="line">    <span class="comment">//默认方法</span></span><br><span class="line">    <span class="keyword">default</span> String <span class="title function_">getName</span><span class="params">()</span>&#123;<span class="keyword">return</span> <span class="string">&quot;JJZI&quot;</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
