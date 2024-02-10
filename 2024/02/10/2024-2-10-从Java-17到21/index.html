@@ -20,28 +20,37 @@
     var CONFIG = {"hostname":"zjjfly.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false,"width":250},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="zjjfly&#39;s blog">
-<meta property="og:url" content="https://zjjfly.github.io/index.html">
+  <meta name="description" content="从Java18到21随着Java最新版本21的推出，其中的新特性之一：虚拟线程，受到广泛关注。笔者觉得有必要对从Java18到21的所有主要的新特性做一个盘点，就像之前的《学习Java9~11》和《学习Java12~17》。 虚拟线程毫无疑问，虚拟线程是所有的新特性中最重要的一个。在此之前，Java中的线程实际是对操作系统的线程的包装，而操作系统的线程的创建代价比较高昂，如果你在线程中发送HTTP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从Java18到21">
+<meta property="og:url" content="https://zjjfly.github.io/2024/02/10/2024-2-10-%E4%BB%8EJava-17%E5%88%B021/index.html">
 <meta property="og:site_name" content="zjjfly&#39;s blog">
+<meta property="og:description" content="从Java18到21随着Java最新版本21的推出，其中的新特性之一：虚拟线程，受到广泛关注。笔者觉得有必要对从Java18到21的所有主要的新特性做一个盘点，就像之前的《学习Java9~11》和《学习Java12~17》。 虚拟线程毫无疑问，虚拟线程是所有的新特性中最重要的一个。在此之前，Java中的线程实际是对操作系统的线程的包装，而操作系统的线程的创建代价比较高昂，如果你在线程中发送HTTP">
 <meta property="og:locale">
+<meta property="article:published_time" content="2024-02-10T14:35:00.000Z">
+<meta property="article:modified_time" content="2024-02-10T14:42:00.894Z">
 <meta property="article:author" content="JunJie Zi">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Java 18">
+<meta property="article:tag" content="Java 19">
+<meta property="article:tag" content="Java 20">
+<meta property="article:tag" content="Java 21">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://zjjfly.github.io/">
+<link rel="canonical" href="https://zjjfly.github.io/2024/02/10/2024-2-10-%E4%BB%8EJava-17%E5%88%B021/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh'
   };
 </script>
 
-  <title>zjjfly's blog</title>
+  <title>从Java18到21 | zjjfly's blog</title>
   
 
 
@@ -141,9 +150,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
@@ -159,10 +169,9 @@
       <meta itemprop="name" content="zjjfly's blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/02/10/2024-2-10-%E4%BB%8EJava-17%E5%88%B021/" class="post-title-link" itemprop="url">从Java18到21</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          从Java18到21
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -186,7 +195,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="从Java18到21"><a href="#从Java18到21" class="headerlink" title="从Java18到21"></a>从Java18到21</h1><p>随着Java最新版本21的推出，其中的新特性之一：虚拟线程，受到广泛关注。笔者觉得有必要对从Java18到21的所有主要的新特性做一个盘点，就像之前的<a href="https://zjjfly.github.io/2019/05/29/2019-5-29-%E5%AD%A6%E4%B9%A0Java9-11/">《学习Java9~11》</a>和<a href="https://zjjfly.github.io/2022/06/21/2022-6-21-%E5%AD%A6%E4%B9%A0Java12-17/">《学习Java12~17》</a>。</p>
+        <h1 id="从Java18到21"><a href="#从Java18到21" class="headerlink" title="从Java18到21"></a>从Java18到21</h1><p>随着Java最新版本21的推出，其中的新特性之一：虚拟线程，受到广泛关注。笔者觉得有必要对从Java18到21的所有主要的新特性做一个盘点，就像之前的<a href="https://zjjfly.github.io/2019/05/29/2019-5-29-%E5%AD%A6%E4%B9%A0Java9-11/">《学习Java9~11》</a>和<a href="https://zjjfly.github.io/2022/06/21/2022-6-21-%E5%AD%A6%E4%B9%A0Java12-17/">《学习Java12~17》</a>。</p>
 <h2 id="虚拟线程"><a href="#虚拟线程" class="headerlink" title="虚拟线程"></a>虚拟线程</h2><p>毫无疑问，虚拟线程是所有的新特性中最重要的一个。在此之前，Java中的线程实际是对操作系统的线程的包装，而操作系统的线程的创建代价比较高昂，如果你在线程中发送HTTP请求到另一个服务器，其中发送请求和处理响应只占线程阻塞的时间的一小部分，大部分时间是在等待响应。避免这种情况的一个方式是使用异步方式，但这种方式的缺点是实现较复杂。而有了虚拟线程，你能够在不改变实现的情况下获得和异步一样的伸缩性。</p>
 <p>创建虚拟线程的方式：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Thread.startVirtualThread(() -&gt; System.out.println(<span class="string">&quot;foo&quot;</span>));</span><br></pre></td></tr></table></figure>
@@ -276,701 +285,38 @@
 </blockquote>
 <p>还可以使用<code>jwebserver</code>来启动服务器，具体用法可以使用<code>jwebserver --help</code>查看。</p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/Java-18/" rel="tag"># Java 18</a>
+              <a href="/tags/Java-19/" rel="tag"># Java 19</a>
+              <a href="/tags/Java-20/" rel="tag"># Java 20</a>
+              <a href="/tags/Java-21/" rel="tag"># Java 21</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
-    <link itemprop="mainEntityOfPage" href="https://zjjfly.github.io/2023/08/21/2023-8-21-%E4%BB%8EJava-8%E8%BF%81%E7%A7%BB%E8%87%B3Java-17/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="JunJie Zi">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zjjfly's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/21/2023-8-21-%E4%BB%8EJava-8%E8%BF%81%E7%A7%BB%E8%87%B3Java-17/" class="post-title-link" itemprop="url">从Java 8迁移至Java 17</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-08-21 20:10:00" itemprop="dateCreated datePublished" datetime="2023-08-21T20:10:00+08:00">2023-08-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-10 22:42:00" itemprop="dateModified" datetime="2024-02-10T22:42:00+08:00">2024-02-10</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="从Java-8迁移至Java-17"><a href="#从Java-8迁移至Java-17" class="headerlink" title="从Java 8迁移至Java 17"></a>从Java 8迁移至Java 17</h1><h2 id="升级Java和Maven"><a href="#升级Java和Maven" class="headerlink" title="升级Java和Maven"></a>升级Java和Maven</h2><p>首先安装Java 17，并把<code>JAVA_HOME</code>改成新版本的安装路径。还需要升级<code>Maven</code>版本，尽量用最新的版本，因为旧版本并不支持Java 17。在IDE修改项目使用的JDK和Maven。然后，在<code>pom.xml</code>中，加入或修改下面的配置（<strong>如果有配置<code>&lt;java.version&gt;</code>，要删除</strong>）：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">maven.compiler.target</span>&gt;</span>17<span class="tag">&lt;/<span class="name">maven.compiler.target</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">maven.compiler.source</span>&gt;</span>17<span class="tag">&lt;/<span class="name">maven.compiler.source</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>如果有显式地配置compiler plugin，则也需要修改：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span>    </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">source</span>&gt;</span>17<span class="tag">&lt;/<span class="name">source</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">target</span>&gt;</span>17<span class="tag">&lt;/<span class="name">target</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/08/21/2023-8-21-%E4%BB%8EJava-8%E8%BF%81%E7%A7%BB%E8%87%B3Java-17/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
-    <link itemprop="mainEntityOfPage" href="https://zjjfly.github.io/2023/08/01/2023-8-1-Mockito-inline%E6%95%99%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="JunJie Zi">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zjjfly's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/01/2023-8-1-Mockito-inline%E6%95%99%E7%A8%8B/" class="post-title-link" itemprop="url">Mockito-inline教程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-08-01 21:10:00" itemprop="dateCreated datePublished" datetime="2023-08-01T21:10:00+08:00">2023-08-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-10 22:42:00" itemprop="dateModified" datetime="2024-02-10T22:42:00+08:00">2024-02-10</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><code>Mockito-inline</code> 是 <code>Mockito</code> 的一个分支，它提供了一种新的方法来模拟方法调用，称为内联模拟。内联模拟可以让你在调用方法时直接指定返回值，而不是在调用完方法后再设置返回值。这种方式的优点在于可以简化代码，并且更容易阅读和维护。相比于<a target="_blank" rel="noopener" href="https://github.com/powermock/powermock">PowerMock</a>，它对代码的侵入性更小（<code>PowerMock</code>的原理是改写类的字节码），而且有更好的社区支持（<code>PowerMock</code>已经两年多没有发布新版本）。所以，使用<code>Mockito-inline</code>替代<code>PowerMock</code>应该是未来的趋势。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/08/01/2023-8-1-Mockito-inline%E6%95%99%E7%A8%8B/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/08/21/2023-8-21-%E4%BB%8EJava-8%E8%BF%81%E7%A7%BB%E8%87%B3Java-17/" rel="prev" title="从Java 8迁移至Java 17">
+      <i class="fa fa-chevron-left"></i> 从Java 8迁移至Java 17
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
   
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
-    <link itemprop="mainEntityOfPage" href="https://zjjfly.github.io/2022/06/21/2022-6-21-%E5%AD%A6%E4%B9%A0Java12-17/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="JunJie Zi">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zjjfly's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/21/2022-6-21-%E5%AD%A6%E4%B9%A0Java12-17/" class="post-title-link" itemprop="url">学习Java12~17</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-06-21 09:32:28" itemprop="dateCreated datePublished" datetime="2022-06-21T09:32:28+08:00">2022-06-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-10 22:42:00" itemprop="dateModified" datetime="2024-02-10T22:42:00+08:00">2024-02-10</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文列举了一些从Java12到17的一些比较重要的特性</p>
-<h2 id="switch表达式"><a href="#switch表达式" class="headerlink" title="switch表达式"></a>switch表达式</h2><p>新的<code>switch</code>表达式：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">var</span> <span class="variable">i</span> <span class="operator">=</span> <span class="keyword">switch</span> (args[<span class="number">0</span>]) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&quot;a&quot;</span> -&gt; <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&quot;b&quot;</span> -&gt; <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">default</span> -&gt; <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>可以看出有两个变化：</p>
-<ul>
-<li>在匹配成功之后不再需要<code>break</code>来终止继续的匹配</li>
-<li>表达式可以直接给变量赋值</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/06/21/2022-6-21-%E5%AD%A6%E4%B9%A0Java12-17/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
-    <link itemprop="mainEntityOfPage" href="https://zjjfly.github.io/2019/07/18/2019-7-10-Python-Tricks%E4%B9%8B%E7%AE%80%E6%B4%81%E4%B9%8B%E9%81%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="JunJie Zi">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zjjfly's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/07/18/2019-7-10-Python-Tricks%E4%B9%8B%E7%AE%80%E6%B4%81%E4%B9%8B%E9%81%93/" class="post-title-link" itemprop="url">Python Tricks之简洁之道</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-07-18 09:32:28" itemprop="dateCreated datePublished" datetime="2019-07-18T09:32:28+08:00">2019-07-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-10 22:42:00" itemprop="dateModified" datetime="2024-02-10T22:42:00+08:00">2024-02-10</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这是”Python Tricks”一书的读书笔记。什么是Python Tricks？就是一小段Python代码，它既传授了Python语言的一个特性，也是一个让你深入发掘这一特性的驱动力。</p>
-<p>本文是该书第二章”写出更简洁的Python”的读书笔记。这里的简洁不止意味的代码量的少，还是指不需要加很多注释就可以让别人看懂，即可读性高。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/07/18/2019-7-10-Python-Tricks%E4%B9%8B%E7%AE%80%E6%B4%81%E4%B9%8B%E9%81%93/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
-    <link itemprop="mainEntityOfPage" href="https://zjjfly.github.io/2019/05/29/2019-5-29-%E5%AD%A6%E4%B9%A0Java9-11/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="JunJie Zi">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zjjfly's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/29/2019-5-29-%E5%AD%A6%E4%B9%A0Java9-11/" class="post-title-link" itemprop="url">学习Java9~11</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-05-29 09:32:28" itemprop="dateCreated datePublished" datetime="2019-05-29T09:32:28+08:00">2019-05-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-10 22:42:00" itemprop="dateModified" datetime="2024-02-10T22:42:00+08:00">2024-02-10</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Java9"><a href="#Java9" class="headerlink" title="Java9"></a>Java9</h2><h3 id="模块化"><a href="#模块化" class="headerlink" title="模块化"></a>模块化</h3><p>模块化有两个目标:</p>
-<ul>
-<li>对JDK本身进行模块化</li>
-<li>提供一个应用程序可以使用的模块系统</li>
-</ul>
-<p>它们是密切相关的,JDK的模块化可通过使用与应用程序开发人员使用的相同的模块系统来实现.通过引入模块化系统,使得Java真正的获得了对模块的三个核心原则的支持.<br>它带来的最重要的几个好处是:</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/05/29/2019-5-29-%E5%AD%A6%E4%B9%A0Java9-11/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
-    <link itemprop="mainEntityOfPage" href="https://zjjfly.github.io/2018/01/01/2018-1-1-Java7-8%E6%96%B0%E7%89%B9%E6%80%A7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="JunJie Zi">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zjjfly's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/01/01/2018-1-1-Java7-8%E6%96%B0%E7%89%B9%E6%80%A7/" class="post-title-link" itemprop="url">Java7&8新特性</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-01-01 09:32:28" itemprop="dateCreated datePublished" datetime="2018-01-01T09:32:28+08:00">2018-01-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-10 22:42:00" itemprop="dateModified" datetime="2024-02-10T22:42:00+08:00">2024-02-10</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1-Java7新特性速览"><a href="#1-Java7新特性速览" class="headerlink" title="1.Java7新特性速览"></a>1.Java7新特性速览</h2><h3 id="1-1-语法变化"><a href="#1-1-语法变化" class="headerlink" title="1.1 语法变化"></a>1.1 语法变化</h3><h4 id="1-1-1-switch增强"><a href="#1-1-1-switch增强" class="headerlink" title="1.1.1 switch增强"></a>1.1.1 switch增强</h4><p>switch-case语法支持String类型了.在此之前只能用于byte、short、char、int以及它们的包装类型还有枚举类型.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> <span class="string">&quot;jjzi&quot;</span>;</span><br><span class="line"><span class="keyword">switch</span> (name) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&quot;zijj&quot;</span>:</span><br><span class="line">        assertTrue(<span class="literal">false</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&quot;jjzi&quot;</span>:</span><br><span class="line">        assertTrue(<span class="literal">true</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        assertTrue(<span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/01/01/2018-1-1-Java7-8%E6%96%B0%E7%89%B9%E6%80%A7/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
-    <link itemprop="mainEntityOfPage" href="https://zjjfly.github.io/2017/10/10/%E5%BF%AB%E5%AD%A6Java8%20%E7%AC%AC%E4%B8%89%E7%AB%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="JunJie Zi">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zjjfly's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/10/10/%E5%BF%AB%E5%AD%A6Java8%20%E7%AC%AC%E4%B8%89%E7%AB%A0/" class="post-title-link" itemprop="url">快学Java8 第三章</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-10-10 09:32:28" itemprop="dateCreated datePublished" datetime="2017-10-10T09:32:28+08:00">2017-10-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-10 22:42:00" itemprop="dateModified" datetime="2024-02-10T22:42:00+08:00">2024-02-10</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="延迟执行"><a href="#延迟执行" class="headerlink" title="延迟执行"></a>延迟执行</h2><p><strong>所有的lambda表达式都是延迟执行的</strong>.如果你希望立刻执行,就没必要使用lambda表达式了.延迟执行的原因有很多,例如:</p>
-<ul>
-<li>在另一个线程中运行</li>
-<li>多次运行代码</li>
-<li>在某个算法的正确时间点上运行代码(例如排序算法中的比较操作)</li>
-<li>只有在需要的时候运行代码</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/10/10/%E5%BF%AB%E5%AD%A6Java8%20%E7%AC%AC%E4%B8%89%E7%AB%A0/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
-    <link itemprop="mainEntityOfPage" href="https://zjjfly.github.io/2017/09/06/2017-9-6-%E4%BD%BF%E7%94%A8JMH%E8%BF%9B%E8%A1%8C%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="JunJie Zi">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zjjfly's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/09/06/2017-9-6-%E4%BD%BF%E7%94%A8JMH%E8%BF%9B%E8%A1%8C%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">使用JMH进行性能测试</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-09-06 09:32:28" itemprop="dateCreated datePublished" datetime="2017-09-06T09:32:28+08:00">2017-09-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-10 22:42:00" itemprop="dateModified" datetime="2024-02-10T22:42:00+08:00">2024-02-10</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近碰到一个问题，在看&lt;&lt;快学Java8&gt;&gt;的时候，作者让写一段代码比较使用parallel stream和一般的stream的性能差异，书中说直接使用<code>System.currentTimeMillis()</code>记录时间，然后比较耗时长短，结果却发现执行相同的任务(统计&lt;&lt;战争与和平&gt;&gt;这本书中的长单词数量)并行流所花的时间居然比一般的流更长，这显然不符合预期。google之后，在StackOverflow看到一个人说那样测试性能不准确，他推荐使用JMH。改用JMH之后，我最终得到了期望的结果。<br>JMH是一个microbenchmark测试框架，是由OpenJDK的开发人员开发的，所以其结果具有很高的可信性，而且它用起来和JUnit一样的方便。下面是官方的hello world示例：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/09/06/2017-9-6-%E4%BD%BF%E7%94%A8JMH%E8%BF%9B%E8%A1%8C%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
-    <link itemprop="mainEntityOfPage" href="https://zjjfly.github.io/2017/09/04/2017-9-4-%E5%BF%AB%E5%AD%A6Java8-%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="JunJie Zi">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zjjfly's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/09/04/2017-9-4-%E5%BF%AB%E5%AD%A6Java8-%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%8B/" class="post-title-link" itemprop="url">快学Java8 第二章下</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-09-04 09:32:28" itemprop="dateCreated datePublished" datetime="2017-09-04T09:32:28+08:00">2017-09-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-10 22:42:00" itemprop="dateModified" datetime="2024-02-10T22:42:00+08:00">2024-02-10</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="聚合"><a href="#聚合" class="headerlink" title="聚合"></a>聚合</h2><p>如果你想用一种方式计算流的元素的合或者把它们组合成一个结果,你可以使用<code>reduce</code>方法.它接收一个二元函数并不断应用它,第一次的参数是是流的前两个元素,然后是第一次调用的结果和流的第三个元素,依次类推,直到流的最后.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;Integer&gt; values = Stream.of(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>);</span><br><span class="line">Optional&lt;Integer&gt; sum = values.reduce((x, y) -&gt; x + y)</span><br></pre></td></tr></table></figure>
-
-<p>这种情况下,<code>reduce</code>计算的是Stream中的数字的和.这个方法返回的是一个<code>Optional</code>,因为Stream可能是空的.你其实可以使用<code>values.reduce(Integer::sum)</code>代替<code>values.reduce((x, y) -&gt; x + y)</code>.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/09/04/2017-9-4-%E5%BF%AB%E5%AD%A6Java8-%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E4%B8%8B/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
-  </nav>
 
 
 
@@ -1022,6 +368,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8EJava18%E5%88%B021"><span class="nav-number">1.</span> <span class="nav-text">从Java18到21</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">虚拟线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%BA%E5%BA%8F%E9%9B%86%E5%90%88"><span class="nav-number">1.2.</span> <span class="nav-text">顺序集合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SequencedCollection"><span class="nav-number">1.2.1.</span> <span class="nav-text">SequencedCollection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SequencedSet"><span class="nav-number">1.2.2.</span> <span class="nav-text">SequencedSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SequencedMap"><span class="nav-number">1.2.3.</span> <span class="nav-text">SequencedMap</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Record%E7%9A%84%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D"><span class="nav-number">1.3.</span> <span class="nav-text">Record的模式匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Swith%E7%9A%84%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D"><span class="nav-number">1.4.</span> <span class="nav-text">Swith的模式匹配</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E5%8C%B9%E9%85%8D"><span class="nav-number">1.4.1.</span> <span class="nav-text">类型匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%B9%E9%85%8Dnull"><span class="nav-number">1.4.2.</span> <span class="nav-text">匹配null</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#case%E7%BB%86%E5%8C%96"><span class="nav-number">1.4.3.</span> <span class="nav-text">case细化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%9A%E4%B8%BE%E5%B8%B8%E9%87%8F"><span class="nav-number">1.4.4.</span> <span class="nav-text">枚举常量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E6%98%93Web%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.5.</span> <span class="nav-text">简易Web服务器</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
