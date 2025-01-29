@@ -28,7 +28,7 @@
 <meta property="og:description" content="从迭代到Stream操作以前，我们要处理一个集合，一般都是迭代它的元素并对每个元素做一些操作。例如，你想计算一本书中长词的数量，首先，把书的内容放入的一行为单位放入list： 123String content &#x3D; new String(Files.readAllBytes(        Paths.get(&quot;alice.txt&quot;)), StandardCharse.UTF_">
 <meta property="og:locale">
 <meta property="article:published_time" content="2017-09-03T01:32:28.000Z">
-<meta property="article:modified_time" content="2024-02-10T15:04:21.823Z">
+<meta property="article:modified_time" content="2025-01-29T16:25:48.467Z">
 <meta property="article:author" content="JunJie Zi">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="Java 8">
@@ -184,7 +184,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-10 23:04:21" itemprop="dateModified" datetime="2024-02-10T23:04:21+08:00">2024-02-10</time>
+                <time title="Modified: 2025-01-30 00:25:48" itemprop="dateModified" datetime="2025-01-30T00:25:48+08:00">2025-01-30</time>
               </span>
 
           
@@ -287,7 +287,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;String&gt; longestFirst=words.sorted(Comparator.comparingInt(String::length).reversed());</span><br></pre></td></tr></table></figure>
 
 <p>当然，你不需要使用流也可以对集合进行排序，<strong>当排序只是多个流操作之一时，<code>sorted</code>方法是很有用的</strong>。<br>注意，<code>Collection.sort</code>是在原来的集合中进行排序，而<code>sorted</code>方法会返回一个已经排好序的新的流。</p>
-<h2 id="简单的聚合方法"><a href="#简单的聚合方法" class="headerlink" title="简单的聚合方法"></a>简单的聚合方法</h2><p>我们已经了解了如何创建和转换流，现在介绍最重要的一点：如何从流获取答案。这一节中涉及的方法统称为聚合方法。它们把流聚合成一个值以便使用。聚合方法是终结操作。<br>之前我们已经看到过一个简单的聚合方法<code>count</code>，他返回流的元素数量。其他的一些简单的聚合方法有<code>min</code>和<code>max</code>，但需要注意的是，<strong>它们返回的是一个<code>Optional&lt;T&gt;</code><strong>，它可能会封装了返回值，也可能表示没有返回值(如果流是空的)。在Java8之前，这种情况通常会返回null，但这可能会导致空指针异常。</strong>Java8中，<code>Optional</code>类型是一种更好的表明没有返回值的方式</strong>。下一章中会详细讨论<code>Optional</code>类型。下面的例子演示了如何从流中获取最大值：</p>
+<h2 id="简单的聚合方法"><a href="#简单的聚合方法" class="headerlink" title="简单的聚合方法"></a>简单的聚合方法</h2><p>我们已经了解了如何创建和转换流，现在介绍最重要的一点：如何从流获取答案。这一节中涉及的方法统称为聚合方法。它们把流聚合成一个值以便使用。聚合方法是终结操作。<br>之前我们已经看到过一个简单的聚合方法<code>count</code>，他返回流的元素数量。其他的一些简单的聚合方法有<code>min</code>和<code>max</code>，但需要注意的是，<strong>它们返回的是一个<code>Optional&lt;T&gt;</code></strong>，它可能会封装了返回值，也可能表示没有返回值(如果流是空的)。在Java8之前，这种情况通常会返回null，但这可能会导致空指针异常。<strong>Java8中，<code>Optional</code>类型是一种更好的表明没有返回值的方式</strong>。下一章中会详细讨论<code>Optional</code>类型。下面的例子演示了如何从流中获取最大值：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;String&gt; largest = sortedWords.max(String::compareToIgnoreCase);</span><br></pre></td></tr></table></figure>
 
 <p><code>finFirst</code>方法返回集合中的第一个值，返回的也是<code>Optional&lt;T&gt;</code>。<strong>它通常和<code>filter</code>方法结合使用</strong>。比如，返回第一个以Q开头的单词：</p>
@@ -482,7 +482,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
